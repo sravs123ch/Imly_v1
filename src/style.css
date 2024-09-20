@@ -1,0 +1,192 @@
+.button-container {
+  display: flex;
+  gap: 0.5rem; /* Adds space between buttons */
+  flex-wrap: nowrap; /* Prevents buttons from wrapping */
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem; 
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  height: 1.75rem;
+  width: auto;  /* Let the width adjust based on content */
+}
+
+/* Specific breakpoints for responsiveness */
+@media (max-width: 640px) { /* For mobile screens */
+  .button {
+    width: auto; /* Adjust width as needed */
+  }
+}
+
+@media (min-width: 641px) { /* For tablet and larger screens */
+  .button {
+    width: auto; /* Allow buttons to take up their natural width */
+  }
+}
+
+  .button:hover {
+    color: white;
+  }
+  
+  .button .icon {
+    width: 1rem;  /* Matches h-4 (height: 1rem) */
+    height: 1rem; /* Matches w-4 (width: 1rem) */
+  }
+  
+  .edit-button {
+    background-color: #d6eaf8;
+    color: #1c7ed6;
+  }
+  
+  .edit-button:hover {
+    background-color: #0c7dbd;
+  }
+  
+  .delete-button {
+    background-color: #ffe0f0;
+    color: #e03131;
+  }
+  
+  .delete-button:hover {
+    background-color: #c92a2a;
+  }
+  
+  /* Common button styles */
+.button-base {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.375rem; /* rounded-md */
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem; /* py-2 px-4 (as per inline styles) */
+    font-size: 0.875rem; /* text-sm (as per inline styles) */
+    font-weight: 500; /* font-medium */
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .save-btn {
+    background-color: #003366; /* bg-custom-darkblue */
+    color: #ffffff; /* text-white */
+  }
+  
+  .save-btn:hover {
+    background-color: #004080; /* hover:bg-custom-lightblue */
+    color: #000000; /* hover:text-black */
+  }
+  
+  .save-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4f46e5; /* focus:ring-indigo-500 */
+  }
+  
+  .cancel-btn {
+    background-color: #f56565; /* bg-red-500 */
+    color: #ffffff; /* text-white */
+  }
+  
+  .cancel-btn:hover {
+    background-color: #feb2b2; /* hover:bg-red-200 */
+    color: #000000; /* hover:text-black */
+  }
+  
+  .cancel-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e53e3e; /* focus:ring-red-500 (if using different focus color) */
+  }
+
+  /* Common styles for both statuses */
+.status-pill {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px; /* This is the equivalent of rounded-full in Tailwind */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+
+/* Styles for Active status */
+.status-active {
+  background-color: #d1fae5; /* bg-green-100 */
+  color: #065f46; /* text-green-800 */
+}
+
+/* Styles for Inactive status */
+.status-inactive {
+  background-color: #fce7f3; /* bg-pink-100 */
+  color: #831843; /* text-pink-800 */
+}
+
+/* Common styles for all gender pills */
+.gender-pill {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px; /* rounded-full */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+  width: 68px;
+  text-align: center;
+}
+
+/* Male gender pill */
+.gender-male {
+  background-color: #d1fae5; /* bg-green-100 */
+  color: #065f46; /* text-green-800 */
+}
+
+/* Female gender pill */
+.gender-female {
+  background-color: #fce7f3; /* bg-pink-100 */
+  color: #f87171; /* text-red-400 */
+}
+
+/* N/A or undefined gender pill */
+.gender-na {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #1f2937; /* text-gray-800 */
+}
+
+  
+
+.body-container {
+  @apply flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center;
+}
+
+
+.heading {
+  @apply text-xl font-semibold;
+}
+
+.search-button-group {
+  @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4;
+}
+
+.search-container {
+  @apply relative flex w-full sm:w-80;
+}
+
+.search-input {
+  @apply w-full p-2 pr-10 border-2 border-gray-600 rounded-md;
+}
+
+.search-icon-container {
+  @apply absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none;
+}
+
+.button-list {
+  @apply flex flex-col gap-2 w-full sm:flex-row sm:gap-2 sm:w-80;
+}
+
+.action-button {
+  @apply w-full inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-lightblue hover:text-gray-700 focus:outline-none;
+}
+
+
+.icon {
+  @apply h-4 w-4;
+}

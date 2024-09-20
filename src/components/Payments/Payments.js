@@ -21,28 +21,32 @@ import TablePagination from '@mui/material/TablePagination';
 import { FaTable, FaPlus } from 'react-icons/fa';
 import SearchIcon from '@mui/icons-material/Search';
 import { IoIosSearch } from 'react-icons/io';
+import {
+  StyledTableCell,
+  StyledTableRow,
+  TablePaginationActions,
+} from "../CustomTablePagination";
 
+// // Styled components
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: '#003375', // Dark blue color
+//     color: theme.palette.common.white,
+//     fontWeight: 'bold',
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-// Styled components
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#003375', // Dark blue color
-    color: theme.palette.common.white,
-    fontWeight: 'bold',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(odd)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
+// }));
 
 // Sample data with images
 const initialPayments = [

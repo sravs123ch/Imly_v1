@@ -41,6 +41,7 @@ export const CustomerProvider = ({ children }) => {
 
   // Function to fetch customer data by ID using the JWT token
   const getCustomerById = async (customerId) => {
+    console.log(customerId);
     const token = localStorage.getItem('jwtToken');
 
     if (!token) {

@@ -25,87 +25,94 @@ import PropTypes from "prop-types";
 import { StoreContext } from '../../Context/storeContext';
 import axios from 'axios';
 import { GETALLSTORES_API ,GETALLSTORESBYID_API , DELETESTORESSBYID_API } from '../../Constants/apiRoutes';
+import { MdOutlineCancel } from "react-icons/md";
+import "../../style.css";
+import {
+  StyledTableCell,
+  StyledTableRow,
+  TablePaginationActions,
+} from "../CustomTablePagination";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#003375',
-    color: theme.palette.common.white,
-    fontWeight: 'bold',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: '#003375',
+//     color: theme.palette.common.white,
+//     fontWeight: 'bold',
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(even)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
+// }));
 
-function TablePaginationActions(props) {
-  const { count, page, rowsPerPage, onPageChange } = props;
-  const theme = useTheme();
+// function TablePaginationActions(props) {
+//   const { count, page, rowsPerPage, onPageChange } = props;
+//   const theme = useTheme();
 
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
+//   const handleFirstPageButtonClick = (event) => {
+//     onPageChange(event, 0);
+//   };
 
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
+//   const handleBackButtonClick = (event) => {
+//     onPageChange(event, page - 1);
+//   };
 
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
+//   const handleNextButtonClick = (event) => {
+//     onPageChange(event, page + 1);
+//   };
 
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
+//   const handleLastPageButtonClick = (event) => {
+//     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+//   };
 
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
+//   return (
+//     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+//       <IconButton
+//         onClick={handleFirstPageButtonClick}
+//         disabled={page === 0}
+//         aria-label="first page"
+//       >
+//         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+//       </IconButton>
+//       <IconButton
+//         onClick={handleBackButtonClick}
+//         disabled={page === 0}
+//         aria-label="previous page"
+//       >
+//         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+//       </IconButton>
+//       <IconButton
+//         onClick={handleNextButtonClick}
+//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+//         aria-label="next page"
+//       >
+//         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+//       </IconButton>
+//       <IconButton
+//         onClick={handleLastPageButtonClick}
+//         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+//         aria-label="last page"
+//       >
+//         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+//       </IconButton>
+//     </Box>
+//   );
+// }
 
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
+// TablePaginationActions.propTypes = {
+//   count: PropTypes.number.isRequired,
+//   onPageChange: PropTypes.func.isRequired,
+//   page: PropTypes.number.isRequired,
+//   rowsPerPage: PropTypes.number.isRequired,
+// };
 
 function Stores() {
   const [stores, setStores] = useState([]);
@@ -247,7 +254,7 @@ function Stores() {
 
     <div className="px-4 sm:px-6 lg:px-8 pt-4 ml-10 lg:ml-72 w-auto">
       <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+        {/* <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
           <h2 className="text-xl font-semibold">Stores</h2>
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="relative flex w-full sm:w-[20rem]">
@@ -290,14 +297,59 @@ function Stores() {
               </li>
             </ul>
           </div>
-        </div>
+        </div> */}
+        <div className="body-container">
+  <h2 className="heading">Stores</h2>
+  <div className="search-button-group">
+    <div className="search-container">
+      <label htmlFor="searchName" className="sr-only">
+        Search
+      </label>
+      <input
+        id="searchName"
+        type="text"
+        placeholder="Search by Name or Email or Mobile"
+        value={searchName}
+        onChange={(e) => setSearchName(e.target.value)}
+        className="search-input"
+      />
+      <div className="search-icon-container">
+        <IoIosSearch />
+      </div>
+    </div>
+
+    <ul className="button-list">
+      <li>
+        <button
+          type="button"
+          className="action-button"
+          onClick={handleAddStoreClick}
+        >
+          <FaPlus aria-hidden="true" className="icon" />
+          Add Stores
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          className="action-button"
+          onClick={handleExportStoresData}
+        >
+          <FaTable aria-hidden="true" className="icon" />
+          Export Stores
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
 
 
         <TableContainer component={Paper} className="mt-4 rounded-lg shadow">
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell>Store Name</StyledTableCell>
+                <StyledTableCell>Stores</StyledTableCell>
                 <StyledTableCell>Email</StyledTableCell>
                 <StyledTableCell>Phone</StyledTableCell>
                 <StyledTableCell>Address</StyledTableCell>
@@ -314,59 +366,47 @@ function Stores() {
                     {`${store.AddressLine1 || ''} ${store.AddressLine2 || ''}`}
                   </StyledTableCell>
 
-                  {/* <StyledTableCell>
-                    <button
-                      type="button"
-                      onClick={() => handleEditClick(store.StoreID)}
-                      className="inline-flex items-center gap-x-1 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-blue-500"
-                    >
-                      <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteClick(store.StoreID)}
-                      className="inline-flex items-center gap-x-1 ml-2 rounded-md bg-red-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-red-500"
-                    >
-                      <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
-                      Delete
-                    </button>
-                  </StyledTableCell> */}
-                      {/* <StyledTableCell>
-  <button
-    type="button"
-    onClick={() => handleEditClick(store.StoreID)}
-    className="m-0.5 inline-flex items-center justify-center gap-x-2 rounded-md bg-blue-500 px-1 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 w-20 h-8"
-  >
-    <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-    Edit
-  </button>
-  <button
-    type="button"
-    onClick={() => handleDeleteClick(store.StoreID)}
-    className="inline-flex items-center justify-center gap-x-2 m-0.5 rounded-md bg-red-500 px-1 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-red-500 w-20 h-8"
-  >
-    <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
-    Delete
-  </button>
-</StyledTableCell> */}
+              
+                     
  <StyledTableCell>
+ 
+    {/* <button
+  type="button"
+  onClick={() => handleEditClick(store.StoreID)}
+  className="button edit-button"
+>
+  <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
+  Edit
+</button>
+
+<button
+  type="button"
+  onClick={() => handleDeleteClick(store.StoreID)}
+  className="button delete-button"
+>
+  <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
+  Delete
+</button> */}
+<div className="button-container">
   <button
     type="button"
     onClick={() => handleEditClick(store.StoreID)}
-    className="m-0.5 inline-flex items-center justify-center gap-x-2 rounded-md bg-blue-600 px-1 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 w-20 h-8"
+    className="button edit-button"
   >
     <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
     Edit
   </button>
+
   <button
     type="button"
     onClick={() => handleDeleteClick(store.StoreID)}
-    className="inline-flex items-center justify-center gap-x-2 m-0.5 rounded-md bg-red-600 px-1 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-red-500 w-20 h-8"
+    className="button delete-button"
   >
-    <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
+    <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
     Delete
   </button>
+</div>
+
 </StyledTableCell>
 
                 </StyledTableRow>

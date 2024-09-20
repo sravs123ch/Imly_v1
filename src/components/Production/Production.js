@@ -794,30 +794,35 @@ import FilterBar from './FilterBar';
 import StatusUpdateDialog from '../Orders/StatusUpdateDialog';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import { FaChevronRight } from 'react-icons/fa';
+import {
+  StyledTableCell,
+  StyledTableRow,
+  TablePaginationActions,
+} from "../CustomTablePagination";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//     [`&.${tableCellClasses.head}`]: {
      
-      [`&.${tableCellClasses.head}`]: {
-        backgroundColor: '#003375', // Dark blue color
-        color: theme.palette.common.white,
-        fontWeight: 'bold',
-      },
-      [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-      },
-    },
+//       [`&.${tableCellClasses.head}`]: {
+//         backgroundColor: '#003375', // Dark blue color
+//         color: theme.palette.common.white,
+//         fontWeight: 'bold',
+//       },
+//       [`&.${tableCellClasses.body}`]: {
+//         fontSize: 14,
+//       },
+//     },
     
-  }));
+//   }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   '&:nth-of-type(odd)': {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   '&:last-child td, &:last-child th': {
+//     border: 0,
+//   },
+// }));
 
 
 export default function Orders() {

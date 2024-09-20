@@ -1392,7 +1392,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import { Combobox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import {CREATEORUPDATE_USERS_API,COUNTRIES_API,STATES_API,CITIES_API} from "../../Constants/apiRoutes";
+import {CREATEORUPDATE_USERS_API,COUNTRIES_API,STATES_API,CITIES_API,GETALLSTORES_API} from "../../Constants/apiRoutes";
+import LoadingAnimation from '../../components/Loading/LoadingAnimation';
 
 const genderOptions = [
   { id: "M", name: "Male" },
@@ -1405,13 +1406,13 @@ const roleOptions = [
   { id: "4", name: "Production" },
   { id: "5", name: "Techinical" },
 ];
-const storeNames = [
-  { id: "1", name: "ImlyStudio-Indiranagar" },
-  { id: "2", name: "ImlyStudio-Jakkur" },
-  { id: "3", name: "ImlyStudio-InfantryRoad" },
-  { id: "4", name: "ImlyStudio-HSRLayout" },
-  { id: "5", name: "ImlyStudio-HSRLayout" },
-];
+// const storeNames = [
+//   { id: "1", name: "ImlyStudio-Indiranagar" },
+//   { id: "2", name: "ImlyStudio-Jakkur" },
+//   { id: "3", name: "ImlyStudio-InfantryRoad" },
+//   { id: "4", name: "ImlyStudio-HSRLayout" },
+//   { id: "5", name: "ImlyStudio-HSRLayout" },
+// ];
 function Userform() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1435,15 +1436,17 @@ function Userform() {
       AddressLine2: "",
       CityID: "",
       StateID: "",
-      CountryID: 5,
+      CountryID: "",
       ZipCode: "",
       ProfileImage: null,
       Comments: "",
+      StoreID:"",
     }
   );
   
   const [countries, setCountries] = useState([]);
   const [countryMap, setCountryMap] = useState({});
+  const [StoreMap, setStoreMap] = useState({});
   const [states, setStates] = useState([]);
   const [stateMap, setStateMap] = useState({});
   const [cities, setCities] = useState([]);
@@ -1453,13 +1456,234 @@ function Userform() {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [query, setQuery] = useState("");
-
+  const [storeNames, setStoreNames] = useState([]);
+  
+  
+  // useEffect(() => {
+  //   if (isEditMode) {
+  //     const user = location.state?.userDetails?.user || userDetails?.user;
+  //     console.log("User details in edit mode:", user);
+  
+  //     if (user) {
+  //       // Initialize the base form data
+  //       const initialFormData = {
+  //         FirstName: user.FirstName || "",
+  //         LastName: user.LastName || "",
+  //         Email: user.Email || "",
+  //         PhoneNumber: user.PhoneNumber || "",
+  //         Gender: user.Gender || "",
+  //         RoleID: user.RoleID || "",
+  //         ProfileImage: null,
+  //         Comments: user.Comments || "",
+  //         UserID: user.UserID || "",
+  //         Password: user.Password || "",
+  //         AddressLine1: "",
+  //         AddressLine2: "",
+  //         CityID: "",
+  //         StateID: "",
+  //         CountryID: "",
+  //         ZipCode: "",
+  //         AddressID: 0,
+  //       };
+  
+  //       // If user has an address, update formData with address details
+  //       const userAddress = user?.Address;
+  //       if (userAddress) {
+  //         initialFormData.AddressLine1 = userAddress.AddressLine1 || "";
+  //         initialFormData.AddressLine2 = userAddress.AddressLine2 || "";
+  //         initialFormData.CityID = userAddress.CityID || "";
+  //         initialFormData.StateID = userAddress.StateID || "";
+  //         initialFormData.CountryID = userAddress.CountryID || "";
+  //         initialFormData.ZipCode = userAddress.ZipCode || "";
+  //         initialFormData.AddressID = userAddress.AddressID || 0;
+  //       }
+  
+  //       // Set form data with user details (address will be included if present)
+  //       setFormData(initialFormData);
+  
+  //       // If country/state/city data is already available, set the selected ones
+  //       const selectedCountry = countries?.find(
+  //         (country) => country.CountryID === userAddress?.CountryID
+  //       );
+  //       const selectedState = states?.find(
+  //         (state) => state.StateID === userAddress?.StateID
+  //       );
+  //       const selectedCity = cities?.find(
+  //         (city) => city.CityID === userAddress?.CityID
+  //       );
+  
+  //       setSelectedCountry(selectedCountry || {});
+  //       setSelectedState(selectedState || {});
+  //       setSelectedCity(selectedCity || {});
+  
+  //       // Fetch states if country is selected and no state data is available
+  //       if (userAddress?.CountryID && !selectedState) {
+  //         fetchStatesByCountry(userAddress.CountryID).then((fetchedStates) => {
+  //           const state = fetchedStates?.find(
+  //             (s) => s.StateID === userAddress.StateID
+  //           );
+  //           setSelectedState(state || {});
+  //         });
+  //       }
+  
+  //       // Fetch cities if state is selected and no city data is available
+  //       if (userAddress?.StateID && !selectedCity) {
+  //         fetchCitiesByState(userAddress.StateID).then((fetchedCities) => {
+  //           const city = fetchedCities?.find(
+  //             (c) => c.CityID === userAddress.CityID
+  //           );
+  //           setSelectedCity(city || {});
+  //         });
+  //       }
+  
+  //       // Set selected gender
+  //       const selectedGender = genderOptions?.find(
+  //         (gender) => gender.id === user.Gender
+  //       );
+  //       setSelectedGender(selectedGender || "");
+  
+  //       // Set selected role
+  //       const selectedRole = roleOptions?.find(
+  //         (role) => role.id === String(user.RoleID)
+  //       );
+  //       setSelectedRole(selectedRole ? selectedRole.name : "");
+  //     }
+  //   }
+  // }, [
+  //   isEditMode,
+  //   location.state?.userDetails?.user,
+  //   userDetails?.user,
+  //   genderOptions,
+  //   roleOptions,
+  //   countries,
+  //   states,
+  //   cities,
+  // ]);
+  
+  // useEffect(() => {
+  //   if (isEditMode) {
+  //     const user = location.state?.userDetails?.user || userDetails?.user;
+  //     console.log("User details in edit mode:", user);
+  
+  //     if (user) {
+  //       // Initialize base form data
+  //       const initialFormData = {
+  //         FirstName: user.FirstName || "",
+  //         LastName: user.LastName || "",
+  //         Email: user.Email || "",
+  //         PhoneNumber: user.PhoneNumber || "",
+  //         Gender: user.Gender || "",
+  //         RoleID: user.RoleID || "",
+  //         StoreID: user.StoreID || "",
+  //         ProfileImage: null,
+  //         Comments: user.Comments || "",
+  //         UserID: user.UserID || "",
+  //         Password: user.Password || "",
+  //         AddressLine1: "",
+  //         AddressLine2: "",
+  //         CityID: "",
+  //         StateID: "",
+  //         CountryID: "",
+  //         ZipCode: "",
+  //         AddressID: 0,
+  //       };
+  
+  //       // If user has an address, update formData with address details
+  //       const userAddress = user?.Address;
+  //       if (userAddress) {
+  //         initialFormData.AddressLine1 = userAddress.AddressLine1 || "";
+  //         initialFormData.AddressLine2 = userAddress.AddressLine2 || "";
+  //         initialFormData.CityID = userAddress.CityID || "";
+  //         initialFormData.StateID = userAddress.StateID || "";
+  //         initialFormData.CountryID = userAddress.CountryID || "";
+  //         initialFormData.ZipCode = userAddress.ZipCode || "";
+  //         initialFormData.AddressID = userAddress.AddressID || 0;
+  //       }
+  
+  //       // Set the form data with user details
+  //       setFormData(initialFormData);
+  
+  //       // Ensure country, state, city, gender, and role options exist before finding values
+  //       if (countries && userAddress?.CountryID) {
+  //         const selectedCountry = countries.find(
+  //           (country) => country.CountryID === userAddress.CountryID
+  //         );
+  //         setSelectedCountry(selectedCountry || {});
+  //       }
+  
+  //       if (states && userAddress?.StateID) {
+  //         const selectedState = states.find(
+  //           (state) => state.StateID === userAddress.StateID
+  //         );
+  //         setSelectedState(selectedState || {});
+  //       }
+  
+  //       if (cities && userAddress?.CityID) {
+  //         const selectedCity = cities.find(
+  //           (city) => city.CityID === userAddress.CityID
+  //         );
+  //         setSelectedCity(selectedCity || {});
+  //       }
+  
+  //       // Fetch states if the country is selected and no state data is available
+  //       if (userAddress?.CountryID && !states?.length) {
+  //         fetchStatesByCountry(userAddress.CountryID).then((fetchedStates) => {
+  //           const state = fetchedStates?.find(
+  //             (s) => s.StateID === userAddress.StateID
+  //           );
+  //           setSelectedState(state || {});
+  //         });
+  //       }
+  
+  //       // Fetch cities if the state is selected and no city data is available
+  //       if (userAddress?.StateID && !cities?.length) {
+  //         fetchCitiesByState(userAddress.StateID).then((fetchedCities) => {
+  //           const city = fetchedCities?.find(
+  //             (c) => c.CityID === userAddress.CityID
+  //           );
+  //           setSelectedCity(city || {});
+  //         });
+  //       }
+  
+  //       // Set Store
+  //   const userStore = storeNames.find(store => store.id === String(user.StoreID));
+  //   setSelectedStore(userStore);
+ 
+  //   // Set Role
+  //   const userRole = roleOptions.find(role => role.id === String(user.RoleID));
+  //   setSelectedRole(userRole);
+ 
+  //       // Set selected gender if gender options are available
+  //       const selectedGender = genderOptions?.find(
+  //         (gender) => gender.id === user.Gender
+  //       );
+  //       setSelectedGender(selectedGender || "");
+  
+  //       // Set selected role if role options are available
+  //       if (roleOptions) {
+  //         const selectedRole = roleOptions.find(
+  //           (role) => role.id === user.RoleID
+  //         );
+  //         setSelectedRole(selectedRole ? selectedRole.name : "");
+  //       }
+  //     }
+  //   }
+  // }, [
+  //   isEditMode,
+  //   location.state?.userDetails?.user,
+  //   userDetails?.user,
+  //   genderOptions,
+  //   roleOptions,
+  //   countries,
+  //   states,
+  //   cities,
+  // ]);
+  
   useEffect(() => {
     if (isEditMode) {
       const user = location.state?.userDetails?.user || userDetails?.user;
-      console.log("User details in edit mode:", user);
-  
-      // Set user form data
+   
+      // Set the form data with the user information
       setFormData({
         FirstName: user.FirstName || "",
         LastName: user.LastName || "",
@@ -1467,72 +1691,61 @@ function Userform() {
         PhoneNumber: user.PhoneNumber || "",
         Gender: user.Gender || "",
         RoleID: user.RoleID || "",
-        ProfileImage: null,
-        Comments: user.Comments || "",
-        UserID: user.UserID || "",
-        Password: user.Password || "",
         AddressLine1: user.Address?.AddressLine1 || "",
         AddressLine2: user.Address?.AddressLine2 || "",
-        CityID: user.Address?.CityID || "",   // Use CityID here
-        StateID: user.Address?.StateID || "", // Use StateID here
-        CountryID: user.Address?.CountryID || "", // Use CountryID here
+        CityID: user.Address?.CityID || "",
+        StateID: user.Address?.StateID || "",
+        CountryID: user.Address?.CountryID || "",
         ZipCode: user.Address?.ZipCode || "",
+        StoreID: user.StoreID || "",
+        Comments: user.Comments || "",
       });
-  
-      // Set the selected gender
-      const selectedGender = genderOptions.find(
-        (gender) => gender.id === user?.Gender
-      );
-      setSelectedGender(selectedGender || "");
-  
-      // Set the selected role
-      const selectedRole = roleOptions.find(
-        (role) => role.id === String(user?.RoleID) // Ensure RoleID is compared as string
-      );
-      setSelectedRole(selectedRole ? selectedRole.name : ""); // Set the role name in combo box
-  
-      // Initialize address form data
-      const userAddress = user?.Address;
-      console.log("User address:", userAddress);
-  
-      if (userAddress) {
-        // Find the corresponding country, state, and city based on their IDs
-        const selectedCountry =
-          countries.find((country) => country.CountryID === userAddress.CountryID) || {};
-        const selectedState =
-          states.find((state) => state.StateID === userAddress.StateID) || {};
-        const selectedCity =
-          cities.find((city) => city.CityID === userAddress.CityID) || {};
-  
-        // Populate the form fields with the selected address details
-        setFormData((prevState) => ({
-          ...prevState,
-          AddressID: userAddress.AddressID || 0,
-          CustomerID: prevState.CustomerID, // Keep the same customer ID
-          AddressLine1: userAddress.AddressLine1 || "",
-          AddressLine2: userAddress.AddressLine2 || "",
-          CityID: userAddress.CityID || "",
-          StateID: userAddress.StateID || "",
-          CountryID: userAddress.CountryID || "",
-          ZipCode: userAddress.ZipCode || "",
-        }));
-  
-        // Set the country, state, and city dropdowns
-        setSelectedCountry(selectedCountry);
-        setSelectedState(selectedState);
-        setSelectedCity(selectedCity);
-  
-        // Fetch states and cities based on the selected address
-        if (userAddress.CountryID) {
-          fetchStatesByCountry(userAddress.CountryID);
-        }
-        if (userAddress.StateID) {
-          fetchCitiesByState(userAddress.StateID);
-        }
-  
-        console.log("Editing Address Data:", userAddress);
+   
+      // // Set Store
+      // const selectedStore = storeNames.find(store => store.id === String(user.StoreID));
+      // setSelectedStore( selectedStore);
+      // console.log( selectedStore);
+
+      const selectedStore = storeNames.find(store => store.id === String(user.StoreID));
+      if (selectedStore) {
+        setSelectedStore(selectedStore);
+        console.log("Selected Store:", selectedStore);
       } else {
-        console.error("Selected address not found.");
+        console.log("No store found for StoreID:", user.StoreID);
+      }
+    
+   
+      // Set Role
+      const userRole = roleOptions.find(role => role.id === String(user.RoleID));
+      setSelectedRole(userRole);
+
+   
+      // Set Gender
+      const selectedGender = genderOptions.find(g => g.id === user.Gender);
+      setSelectedGender(selectedGender);
+   
+      // Set Country
+      const selectedCountry = countries.find(country => country.CountryID === user.Address.CountryID);
+      if (selectedCountry) {
+        setSelectedCountry(selectedCountry);
+        fetchStatesByCountry(selectedCountry.CountryID);  // Fetch states based on selected country
+      }
+   
+      // Fetch states and then set state and city
+      if (user.Address?.StateID) {
+        fetchStatesByCountry(user.Address.CountryID).then(() => {
+          const selectedState = states.find(state => state.StateID === user.Address.StateID);
+          setSelectedState(selectedState);
+          fetchCitiesByState(user.Address.StateID);  // Fetch cities based on selected state
+        });
+      }
+   
+      // Fetch cities and set the selected city
+      if (user.Address?.CityID) {
+        fetchCitiesByState(user.Address.StateID).then(() => {
+          const selectedCity = cities.find(city => city.CityID === user.Address.CityID);
+          setSelectedCity(selectedCity);
+        });
       }
     }
   }, [
@@ -1541,11 +1754,9 @@ function Userform() {
     userDetails?.user,
     genderOptions,
     roleOptions,
-    //countries, cities, states, // These should not be in dependencies to avoid infinite loops
+    countries, 
+    storeNames, 
   ]);
-  
-  
-  
   
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -1567,10 +1778,11 @@ function Userform() {
 
   const [selectedGender, setSelectedGender] = useState(formData.Gender || "");
   const [selectedStore, setSelectedStore] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleStoreChange = (store) => {
-    setSelectedStore(store);
-  };
+  // const handleStoreChange = (store) => {
+  //   setSelectedStore(store);
+  // };
 
   const handleGenderChange = (gender) => {
     setSelectedGender(gender);
@@ -1592,7 +1804,7 @@ function Userform() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true); // Show loading animation
     try {
       const formDataToSend = new FormData();
 
@@ -1612,7 +1824,7 @@ function Userform() {
 
       const apiUrl =
         // "https://imlystudios-backend-mqg4.onrender.com/api/users/createOrUpdateUser";
-        CREATEORUPDATE_USERS_API
+        CREATEORUPDATE_USERS_API;
       const isEditMode = Boolean(formData.UserID); // Check if UserID exists to determine if it's an update
 
       const method = isEditMode ? "put" : "post"; // Choose method based on whether it's an edit or create
@@ -1650,6 +1862,8 @@ function Userform() {
       } else {
         console.error("Submission failed with error:", error.message);
       }
+    }finally {
+      setIsLoading(false); // Hide loading animation
     }
   };
 
@@ -1735,6 +1949,32 @@ function Userform() {
       console.error("Error fetching cities:", error);
     }
   };
+  // const handleStoreChange = (selectedStore) => {
+  //   if (!selectedStore) return;
+
+  //   const StoreID =
+  //     StoreMap[selectedStore.StoreName] || selectedStore.StoreID;
+
+  //   setSelectedStore(selectedStore);
+  //   setFormData({
+  //     ...formData,
+  //     StoreID: StoreID,
+  //     StoreName: selectedStore.StoreName,
+  //   });
+   
+  // };
+  const handleStoreChange = (selectedStore) => {
+    if (!selectedStore) return;
+  
+    const StoreID = selectedStore.id; // Use the id directly
+    setSelectedStore(selectedStore);
+    setFormData({
+      ...formData,
+      StoreID: StoreID,
+      StoreName: selectedStore.StoreName,
+    });
+  };
+  
   const handleCountryChange = (selectedCountry) => {
     if (!selectedCountry) return;
 
@@ -1777,7 +2017,63 @@ function Userform() {
       CityName: city.CityName,
     });
   };
+ 
+  // useEffect(() => {
+  //   const fetchStores = async () => {
+  //     try {
+  //       const response = await axios.get(GETALLSTORES_API);
+  //       console.log("API Response:", response.data);
+        
+  //       // Extract the Stores array from the API response
+  //       const storesData = response.data.Stores || []; 
+        
+  //       // Check if it's an array and set store names
+  //       setStoreNames(Array.isArray(storesData) ? storesData : []);
+        
+  //     } catch (error) {
+  //       console.error("Error fetching stores:", error);
+  //     }
+  //   };
+  
+  //   fetchStores();
+  // }, []);
+  
 
+  // const handleStoreChange = (store) => {
+  //   if (!store || !store.StoreID) {
+  //     console.error("Invalid store selected:", store);
+  //     return;
+  //   }
+  
+  //   setSelectedStore(store);
+  //   console.log("Selected Store ID:", store.StoreID);
+  
+  //   // Update formData with selected store ID and name
+  //   setFormData({
+  //     ...formData,
+  //     StoreID: store.StoreID, // Store ID to send to the backend
+  //     // StoreName: store.StoreName,
+  //   });
+  // };
+  
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await axios.get(GETALLSTORES_API);
+        const storesData = response.data.Stores || [];
+        const mappedStores = storesData.map(store => ({
+          id: store.StoreID,
+          StoreName: store.StoreName,
+        }));
+        setStoreNames(mappedStores);
+      } catch (error) {
+        console.error("Error fetching stores:", error);
+      }
+    };
+  
+    fetchStores();
+  }, []);
+  
   return (
     <div className="px-4 sm:px-6 lg:px-8 pt-4 sm:ml-10 lg:ml-72 w-auto">
       <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
@@ -1786,7 +2082,7 @@ function Userform() {
             <h2 className="text-xl font-semibold mb-4 px-24">Users</h2>
           </div>
           <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 px-16 md:px-24">
-            <div className="w-full">
+            {/* <div className="w-full">
               <label
                 htmlFor="storeName"
                 className="block text-sm font-medium text-gray-700"
@@ -1848,7 +2144,93 @@ function Userform() {
                   </Combobox.Options>
                 </div>
               </Combobox>
-            </div>
+            </div> */}
+            {/* <div className="w-full">
+      <label htmlFor="storeName" className="block text-sm font-medium text-gray-700">
+        Store Name
+      </label>
+      <Combobox value={selectedStore} onChange={handleStoreChange}>
+        <div className="relative mt-1">
+          <Combobox.Input
+            id="storeName"
+            className="block w-full rounded-md border border-gray-400 py-2 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            displayValue={(store) => store?.name || ""}
+            placeholder="Select Store"
+          />
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+            <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </Combobox.Button>
+          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            {storeNames.map((store) => (
+              <Combobox.Option
+                key={store.id}
+                className={({ active }) =>
+                  `relative cursor-default select-none py-2 pl-3 pr-9 ${active ? "bg-indigo-600 text-white" : "text-gray-900"}`
+                }
+                value={store}
+              >
+                {({ selected, active }) => (
+                  <>
+                    <span className={`block truncate ${selected ? "font-semibold" : "font-normal"}`}>
+                      {store.name}
+                    </span>
+                    {selected && (
+                      <span className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-indigo-600"}`}>
+                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    )}
+                  </>
+                )}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </div>
+      </Combobox>
+    </div> */}
+
+<div className="w-full">
+  <label htmlFor="storeName" className="block text-sm font-medium text-gray-700">
+    Store Name
+  </label>
+  <Combobox value={selectedStore} onChange={handleStoreChange}>
+    <div className="relative mt-1">
+      <Combobox.Input
+        id="storeName"
+        className="block w-full rounded-md border border-gray-400 py-2 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        displayValue={(store) => store?.StoreName || ""}
+        placeholder="Select Store"
+      />
+      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+      </Combobox.Button>
+      <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        {storeNames.map((store) => (
+          <Combobox.Option
+            key={store.StoreID} // Use StoreID as the key
+            className={({ active }) =>
+              `relative cursor-default select-none py-2 pl-3 pr-9 ${active ? "bg-indigo-600 text-white" : "text-gray-900"}`
+            }
+            value={store}
+          >
+            {({ selected, active }) => (
+              <>
+                <span className={`block truncate ${selected ? "font-semibold" : "font-normal"}`}>
+                  {store.StoreName} {/* Display the StoreName */}
+                </span>
+                {selected && (
+                  <span className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-indigo-600"}`}>
+                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                )}
+              </>
+            )}
+          </Combobox.Option>
+        ))}
+      </Combobox.Options>
+    </div>
+  </Combobox>
+</div>
+
 
             <div>
               <label
@@ -2346,7 +2728,7 @@ function Userform() {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-end gap-4">
+           {/* <div className="mt-6 flex justify-end gap-4">
             <button
               type="submit"
               className="inline-flex justify-center rounded-md border border-transparent bg-custom-darkblue py-2 px-4 text-sm font-medium text-white hover:text-black shadow-sm hover:bg-custom-lightblue focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -2360,8 +2742,31 @@ function Userform() {
             >
               Cancel
             </button>
-          </div>
+          </div>  */}
+          <div className="mt-6 flex justify-end gap-4">
+<button
+        type="submit"
+        className="button-base save-btn"
+        onClick={handleFormSubmit}
+      >
+       {isEditMode ? "Update User" : "Create User"}
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+      </div>
         </form>
+        {/* {isLoading && <LoadingAnimation />} */}
+        {isLoading && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
+
       </div>
     </div>
   );

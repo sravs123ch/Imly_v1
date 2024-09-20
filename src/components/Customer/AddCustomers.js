@@ -17,6 +17,7 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import LoadingAnimation from '../../components/Loading/LoadingAnimation';
 import {
   Table,
   TableBody,
@@ -27,32 +28,38 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import {CREATEORUPDATE_CUSTOMERS_API,CREATEORUPDATE_CUSTOMERS_ADDRESS_API, ORDERBYCUSTOMERID_API,
+import {CREATEORUPDATE_CUSTOMERS_API,CREATEORUPDATE_CUSTOMERS_ADDRESS_API, DELETE_CUSTOMERS_ADDRESS_API,ORDERBYCUSTOMERID_API,
   COUNTRIES_API
-  ,STATES_API,CITIES_API
+  ,STATES_API,CITIES_API,GETALLSTORES_API
  } from "../../Constants/apiRoutes";
+import { MdOutlineCancel } from 'react-icons/md';
+import {
+  StyledTableCell,
+  StyledTableRow,
+  TablePaginationActions,
+} from "../CustomTablePagination";
 
-// Define Styled Components
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#003375",
-    // backgroundColor: '#F0E68C',
-    color: theme.palette.common.white,
-    fontWeight: "bold",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+// // Define Styled Components
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: "#003375",
+//     // backgroundColor: '#F0E68C',
+//     color: theme.palette.common.white,
+//     fontWeight: "bold",
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(even)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
+// }));
 
 const steps = ["Customer Details", "Address", "Orders"];
 const genderOptions = [
@@ -137,6 +144,8 @@ function AddCustomers() {
   const [stateMap, setStateMap] = useState({});
   const [cityMap, setCityMap] = useState({});
   const [addresses, setAddresses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [storeNames, setStoreNames] = useState([]);
 
   // useEffect(() => {
   //   if (isEditMode) {
@@ -408,6 +417,7 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
   //   }
   // };
   const handleCustomerFormSubmit = async () => {
+    setIsLoading(true); // Show loading animation
     const customerApiUrl =
       // "https://imlystudios-backend-mqg4.onrender.com/api/customers/createOrUpdateCustomer";
       CREATEORUPDATE_CUSTOMERS_API
@@ -450,6 +460,8 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
         console.error("Error in setting up request:", error.message);
         setError("Error: " + error.message);
       }
+    }finally {
+      setIsLoading(false); // Hide loading animation
     }
   };
   
@@ -518,6 +530,7 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
 
 
   const handleAddressFormSubmit = async (customerId) => {
+    setIsLoading(true); // Show loading animation
     const addressesApiUrl =
       // "https://imlystudios-backend-mqg4.onrender.com/api/customers/createOrUpdateAddress";
       CREATEORUPDATE_CUSTOMERS_ADDRESS_API;
@@ -580,6 +593,8 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
         console.error("Error in setting up request:", error.message);
         setError("Error: " + error.message);
       }
+    }finally {
+      setIsLoading(false); // Hide loading animation
     }
   };
   
@@ -588,6 +603,7 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
     const fetchOrders = async () => {
       try {
         const customerId = customerFormData.CustomerID;
+        console.log(customerId)
 
         if (!customerId) return; // Ensure customerId exists
 
@@ -777,9 +793,6 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
   const [loading, setLoading] = useState(true);
   const [selectedStore, setSelectedStore] = useState(null);
 
-  const handleStoreChange = (store) => {
-    setSelectedStore(store);
-  };
 
   const handleEdit = (index) => {
     // Extract the selected address using the index
@@ -865,8 +878,9 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
       return;
     }
   
-    const deleteApiUrl = `https://imlystudios-backend-mqg4.onrender.com/api/customers/deleteAddress/${addressId}`;
-  
+    const deleteApiUrl = 
+    // `https://imlystudios-backend-mqg4.onrender.com/api/customers/deleteAddress/${addressId}`;
+  `${DELETE_CUSTOMERS_ADDRESS_API}/${addressId}`;
     try {
       // Make a DELETE request to the API
       const response = await axios.delete(deleteApiUrl);
@@ -906,6 +920,46 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
       Addresses: [],
     });
   };
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await axios.get(GETALLSTORES_API);
+        console.log("API Response:", response.data);
+        
+        // Extract the Stores array from the API response
+        const storesData = response.data.Stores || []; 
+        
+        // Check if it's an array and set store names
+        setStoreNames(Array.isArray(storesData) ? storesData : []);
+        
+      } catch (error) {
+        console.error("Error fetching stores:", error);
+      }
+    };
+  
+    fetchStores();
+  }, []);
+  
+
+  const handleStoreChange = (store) => {
+    if (!store || !store.StoreID) {
+      console.error("Invalid store selected:", store);
+      return;
+    }
+  
+    setSelectedStore(store);
+    console.log("Selected Store ID:", store.StoreID);
+  
+    // Update formData with selected store ID and name
+    setCustomerFormData({
+      ...customerFormData,
+      StoreID: store.StoreID, // Store ID to send to the backend
+      // StoreName: store.StoreName,
+    });
+  };
+  
+  
 
   return (
     <>
@@ -969,7 +1023,7 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
               >
                 {activeStep === 0 && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                    <div className="flex items-center gap-4 w-full">
+                    {/* <div className="flex items-center gap-4 w-full">
   <label htmlFor="storeName" className="w-1/3 text-xs font-medium text-gray-700">
     Store Name
   </label>
@@ -1018,7 +1072,94 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
       </div>
     </Combobox>
   </div>
+</div> */}
+{/* <div className="w-full">
+  <label htmlFor="storeName" className="block text-sm font-medium text-gray-700">
+    Store Name
+  </label>
+  <Combobox value={selectedStore} onChange={handleStoreChange}>
+    <div className="relative mt-1">
+      <Combobox.Input
+        id="storeName"
+        className="block w-full rounded-md border border-gray-400 py-2 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        displayValue={(store) => store?.StoreName || ""}
+        placeholder="Select Store"
+      />
+      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+      </Combobox.Button>
+      <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        {storeNames.map((store) => (
+          <Combobox.Option
+            key={store.StoreID} // Use StoreID as the key
+            className={({ active }) =>
+              `relative cursor-default select-none py-2 pl-3 pr-9 ${active ? "bg-indigo-600 text-white" : "text-gray-900"}`
+            }
+            value={store}
+          >
+            {({ selected, active }) => (
+              <>
+                <span className={`block truncate ${selected ? "font-semibold" : "font-normal"}`}>
+                  {store.StoreName} 
+                </span>
+                {selected && (
+                  <span className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-indigo-600"}`}>
+                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                )}
+              </>
+            )}
+          </Combobox.Option>
+        ))}
+      </Combobox.Options>
+    </div>
+  </Combobox>
+</div> */}
+<div className="flex items-center gap-4 w-full">
+  <label htmlFor="storeName" className="w-1/3 text-xs font-medium text-gray-700">
+    Store Name
+  </label>
+  <Combobox value={selectedStore} onChange={handleStoreChange} className="w-full">
+    <div className="relative mt-1">
+      <Combobox.Input
+        id="storeName"
+        className={`p-1 w-full border rounded-md ${
+          error ? "border-red-500" : "border-gray-400"
+        }`}
+        displayValue={(store) => store?.StoreName || ""}
+        placeholder="Select Store"
+      />
+      <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+      </Combobox.Button>
+      <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        {storeNames.map((store) => (
+          <Combobox.Option
+            key={store.StoreID} // Use StoreID as the key
+            className={({ active }) =>
+              `relative cursor-default select-none py-2 pl-3 pr-9 ${active ? "bg-indigo-600 text-white" : "text-gray-900"}`
+            }
+            value={store}
+          >
+            {({ selected, active }) => (
+              <>
+                <span className={`block truncate ${selected ? "font-semibold" : "font-normal"}`}>
+                  {store.StoreName} {/* Display the StoreName */}
+                </span>
+                {selected && (
+                  <span className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-indigo-600"}`}>
+                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                )}
+              </>
+            )}
+          </Combobox.Option>
+        ))}
+      </Combobox.Options>
+    </div>
+  </Combobox>
 </div>
+
 <div></div>
                     {/* First Name */}
                     <div className="flex items-center gap-4">
@@ -1387,7 +1528,7 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
                       />
                     </div>
 
-                    <div className="mt-6 flex justify-end gap-4">
+                    {/* <div className="mt-6 flex justify-end gap-4">
                       <button
                         type="submit"
                         onClick={handleCustomerFormSubmit}
@@ -1402,7 +1543,30 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
                       >
                         Cancel
                       </button>
-                    </div>
+                    </div> */}
+                      <div className="flex justify-end gap-2 col-span-2">
+                      <button
+        type="submit"
+        className="button-base save-btn"
+        onClick={handleCustomerFormSubmit}
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+      </div>
+      {/* {isLoading && <LoadingAnimation />} */}
+      {isLoading && (
+ <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
+
                   </div>
                 )}
                 {activeStep === 1 && (
@@ -1622,8 +1786,8 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
                       </div>
 
                     
-                      <div className="flex justify-end col-span-2">
-                        <button
+                      {/* <div className="flex justify-end col-span-2"> */}
+                        {/* <button
                           onClick={() => {
                             handleAddressFormSubmit(customerId); // Handle the form submission for a specific customer
                           }}
@@ -1633,18 +1797,44 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
                           <span className="text-lg">
                             <IoMdAddCircleOutline />
                           </span>
-                        </button>
+                        </button> */}
+                      
                     
                          
-      <button
+      {/* <button
         type="button"
         onClick={handleCancel}
         className="inline-flex justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white hover:text-black shadow-sm hover:bg-red-200 ml-2" // Added ml-2 here
       >
         Cancel
-      </button>
+      </button> */}
+      
   
-                      </div>
+                      {/* </div> */}
+                      <div className="flex justify-end gap-2 col-span-2">
+                      <button
+        type="submit"
+        className="button-base save-btn"
+        onClick={() => {
+          handleAddressFormSubmit(customerId); // Handle the form submission for a specific customer
+        }}
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+      </div>
+      {isLoading && (
+ <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
+
                     </div> 
                    
                     {/* <TableContainer component={Paper} className="mt-4" sx={{ width: '80%' }}> */}
@@ -1694,48 +1884,9 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
                                     <StyledTableCell>
                                       {address.ZipCode || ""}
                                     </StyledTableCell>
-                                    {/* <StyledTableCell>
-                                      <Button
-                                        onClick={() => handleEdit(index)}
-                                        startIcon={<FaEdit />}
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                        className="mr-2"
-                                      >
-                                        Edit
-                                      </Button>
-
-                                      <Button
-                                        onClick={() => handleDelete(index)}
-                                        startIcon={<FaTrashAlt />}
-                                        variant="contained"
-                                        color="secondary"
-                                        size="small"
-                                      >
-                                        Delete
-                                      </Button>
-                                    </StyledTableCell> */}
-                                      {/* <StyledTableCell>
-                    <button
-                      type="button"
-                      onClick={() => handleEdit(index)}
-                      className=" m-0.5 inline-flex items-center gap-x-1 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-blue-500"
-                    >
-                      <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(index)}
-                      className=" inline-flex items-center gap-x-1 m-0.5 rounded-md bg-red-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-red-500"
-                    >
-                      <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
-                      Delete
-                    </button>
-                  </StyledTableCell>  */}
+                                    
                    <StyledTableCell>
-  <button
+  {/* <button
     type="button"
     onClick={() => handleEdit(index)}
     className="m-0.5 inline-flex items-center justify-center gap-x-2 rounded-md bg-blue-600 px-1 py-0.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 w-20 h-8"
@@ -1752,7 +1903,43 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
       <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
       Delete
     </button>
-  </div>
+  </div> */}
+    {/* <button
+  type="button"
+  onClick={() => handleEdit(index)}
+  className="button edit-button"
+>
+  <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
+  Edit
+</button>
+
+<button
+  type="button"
+  onClick={() => handleDelete(address.AddressID)}
+  className="button delete-button"
+>
+  <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
+  Delete
+</button> */}
+<div className="button-container">
+  <button
+    type="button"
+    onClick={() => handleEdit(index)}
+    className="button edit-button"
+  >
+    <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
+    Edit
+  </button>
+
+  <button
+    type="button"
+    onClick={() => handleDelete(address.AddressID)}
+    className="button delete-button"
+  >
+    <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
+    Delete
+  </button>
+</div>
 
 </StyledTableCell>
 
@@ -1864,10 +2051,17 @@ const [addressTableData, setAddressTableData] = useState([]); // Initial state i
 
     {/* Cancel Button aligned to the left */}
     <div className="mt-4 flex justify-end">
-      <button
+      {/* <button
         type="button"
         onClick={handleCancel}
         className="inline-flex justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-200 hover:text-black"
+      >
+        Cancel
+      </button> */}
+        <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
       >
         Cancel
       </button>

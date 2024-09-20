@@ -27,26 +27,32 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import {CREATEORUPDATE_STORES_API,STOREUSERSBYSTORE_ID_API,GETALLSTOREUSERSBYSTORE_ID_API,COUNTRIES_API,STATES_API,CITIES_API} from "../../Constants/apiRoutes";
-
+import "../../style.css";
+import LoadingAnimation from '../../components/Loading/LoadingAnimation';
+import {
+  StyledTableCell,
+  StyledTableRow,
+  TablePaginationActions,
+} from "../CustomTablePagination";
 
 // Styled table components
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#003375",
-    color: theme.palette.common.white,
-    fontWeight: "bold",
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: "#003375",
+//     color: theme.palette.common.white,
+//     fontWeight: "bold",
 
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(odd)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+// }));
 
 // Steps for stepper
 const steps = ["Store Details", "Store Users"];
@@ -84,6 +90,7 @@ function StoreForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = Boolean(
     location.state?.storeDetails?.store || storeDetails?.store
@@ -151,7 +158,7 @@ function StoreForm() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true); // Show loading animation
     const isUpdate = formData.StoreID ? true : false;
     const apiUrl =
       // "https://imlystudios-backend-mqg4.onrender.com/api/stores/createOrUpdateStore";
@@ -172,6 +179,8 @@ function StoreForm() {
       } else {
         setError("Error: " + error.message);
       }
+    }finally {
+      setIsLoading(false); // Hide loading animation
     }
   };
 
@@ -626,7 +635,7 @@ function StoreForm() {
                     </div>
                   </div>
                 </div><div className="mt-6 flex justify-end gap-4">
-                    <button
+                    {/* <button
                       type="submit"
                       onClick={handleFormSubmit}
                       className="inline-flex justify-center rounded-md border border-transparent bg-custom-darkblue py-2 px-4 text-sm font-medium text-white hover:text-black shadow-sm hover:bg-custom-lightblue focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -639,8 +648,46 @@ function StoreForm() {
                       className="inline-flex justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white hover:text-black shadow-sm hover:bg-red-200"
                     >
                       Cancel
-                    </button>
-                  </div></>
+                    </button> */}
+                    {/* <div className="mt-6 flex justify-end gap-4">
+  <button
+    type="submit"
+    onClick={handleFormSubmit}
+    className="save-btn"
+  >
+    Save
+  </button>
+  <button
+    type="button"
+    onClick={handleCancel}
+    className="cancel-btn"
+  >
+    Cancel
+  </button>
+</div> */}
+  <button
+        type="submit"
+        className="button-base save-btn"
+        onClick={handleFormSubmit}
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+
+                  </div>
+      {/* {isLoading && <LoadingAnimation />} */}
+      {isLoading && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
+                  </>
               )}
 
 
@@ -692,7 +739,7 @@ function StoreForm() {
                       </Table>
                     </TableContainer>
 
-                    <div className="mt-6 flex justify-end gap-4">
+                    {/* <div className="mt-6 flex justify-end gap-4">
                       <button
                         type="submit"
                         onClick={handleFormSubmit}
@@ -707,7 +754,44 @@ function StoreForm() {
                       >
                         Cancel
                       </button>
-                    </div>
+                    </div> */}
+                    {/* <div className="mt-6 flex justify-end gap-4">
+  <button
+    type="submit"
+    onClick={handleFormSubmit}
+    className="save-btn"
+  >
+    Save
+  </button>
+  <button
+    type="button"
+    onClick={handleCancel}
+    className="cancel-btn"
+  >
+    Cancel
+  </button>
+</div> */}
+<div className="mt-6 flex justify-end gap-4">
+<button
+        type="submit"
+        className="button-base save-btn"
+        onClick={handleFormSubmit}
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+      </div>
+      {isLoading && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
 
                     {/* Modal to show filtered users */}
                     <Dialog open={isModalOpen} onClose={handleCloseModal}>
@@ -746,14 +830,45 @@ function StoreForm() {
                         </TableContainer>
                       </DialogContent>
                       <DialogActions>
-                        <Button onClick={handleCloseModal}>Cancel</Button>
+                        {/* <Button onClick={handleCloseModal}>Cancel</Button>
                         <Button
                           onClick={handleAddUsers}
                           variant="contained"
                           disabled={selectedUsers.length === 0} 
                         >
                           Add Users
-                        </Button>
+                        </Button> */}
+                        <div className="mt-6 flex justify-end gap-4">
+  {/* <button
+    type="submit"
+    onClick={handleAddUsers}
+    className="save-btn"
+  >
+    Save
+  </button>
+  <button
+    type="button"
+    onClick={handleCloseModal}
+    className="cancel-btn"
+  >
+    Cancel
+  </button> */}
+    <button
+        type="submit"
+        className="button-base save-btn"
+        onClick={handleAddUsers}
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCloseModal}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+</div>
+
                       </DialogActions>
                     </Dialog>
                   </div>

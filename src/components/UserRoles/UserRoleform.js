@@ -183,11 +183,15 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserRoleContext } from '../../Context/roleContext';
 import {CREATEORUPDATE_ROLES_API} from "../../Constants/apiRoutes";
+import { useLoading } from '../../Context/LoadingContext';
+import LoadingAnimation from '../../components/Loading/LoadingAnimation';
 
 function UserRoleform() {
     const navigate = useNavigate();
     const location = useLocation();
     const { userRoleDetails } = useContext(UserRoleContext);
+    // const { isLoading, showLoading, hideLoading } = useLoading();
+    const [isLoading, setIsLoading] = useState(false);
 
     const isEditMode = Boolean(location.state?.userRoleDetails?.role || userRoleDetails?.role);
 
@@ -229,41 +233,76 @@ function UserRoleform() {
         }));
     };
 
+    // const handleFormSubmit = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //         const apiUrl = 
+    //         // "https://imlystudios-backend-mqg4.onrender.com/api/userrole/createOrUpdateRole";
+    //         CREATEORUPDATE_ROLES_API;
+    //         const payload = {
+    //             ...formData,
+    //             RoleID: formData.RoleID || 0,  
+    //             TenantID: 1,
+    //         };
+
+    //         const response = await axios.post(apiUrl, payload);
+
+    //         console.log("Full Response:", response);
+    //         console.log("Response data:", response.data);
+
+    //         navigate("/UserRole");
+    //     } catch (error) {
+    //         console.error("Submission failed:", error);
+    //         if (error.response) {
+    //             console.error("Response data:", error.response.data);
+    //             console.error("Response status:", error.response.status);
+    //             console.error("Response headers:", error.response.headers);
+    //             setError("Failed to save role: " + (error.response.data.message || "Unknown error"));
+    //         } else if (error.request) {
+    //             console.error("No response received:", error.request);
+    //             setError("No response received from server.");
+    //         } else {
+    //             console.error("Error in setting up request:", error.message);
+    //             setError("Error: " + error.message);
+    //         }
+    //     }
+    // };
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+        setIsLoading(true); // Show loading animation
+    
         try {
-            const apiUrl = 
-            // "https://imlystudios-backend-mqg4.onrender.com/api/userrole/createOrUpdateRole";
-            CREATEORUPDATE_ROLES_API;
-            const payload = {
-                ...formData,
-                RoleID: formData.RoleID || 0,  
-                TenantID: 1,
-            };
-
-            const response = await axios.post(apiUrl, payload);
-
-            console.log("Full Response:", response);
-            console.log("Response data:", response.data);
-
-            navigate("/UserRole");
+          const apiUrl = CREATEORUPDATE_ROLES_API; // Define your API URL
+          const payload = {
+            ...formData,
+            RoleID: formData.RoleID || 0,
+            TenantID: 1,
+          };
+    
+          const response = await axios.post(apiUrl, payload);
+    
+          console.log("Full Response:", response);
+          console.log("Response data:", response.data);
+    
+          navigate("/UserRole");
         } catch (error) {
-            console.error("Submission failed:", error);
-            if (error.response) {
-                console.error("Response data:", error.response.data);
-                console.error("Response status:", error.response.status);
-                console.error("Response headers:", error.response.headers);
-                setError("Failed to save role: " + (error.response.data.message || "Unknown error"));
-            } else if (error.request) {
-                console.error("No response received:", error.request);
-                setError("No response received from server.");
-            } else {
-                console.error("Error in setting up request:", error.message);
-                setError("Error: " + error.message);
-            }
+          console.error("Submission failed:", error);
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+            console.error("Response headers:", error.response.headers);
+            setError("Failed to save role: " + (error.response.data.message || "Unknown error"));
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+            setError("No response received from server.");
+          } else {
+            console.error("Error in setting up request:", error.message);
+            setError("Error: " + error.message);
+          }
+        } finally {
+          setIsLoading(false); // Hide loading animation
         }
-    };
-
+      };
     const handleCancel = () => {
         navigate("/UserRole");
     };
@@ -338,7 +377,7 @@ function UserRoleform() {
 
                 {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
 
-                <div className="mt-6 flex justify-end gap-4">
+                 {/* <div className="mt-6 flex justify-end gap-4">
                     <button
                         type="submit"
                         className="inline-flex justify-center rounded-md border border-transparent bg-custom-darkblue py-2 px-4 text-sm font-medium text-white hover:text-black shadow-sm hover:bg-custom-lightblue focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -352,10 +391,34 @@ function UserRoleform() {
                     >
                         Cancel
                     </button>
-                </div>
+                </div>  */}
+    
+                <div className="mt-6 flex justify-end gap-4">
+<button
+        type="submit"
+        className="button-base save-btn"
+        onClick ={handleFormSubmit}
+
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="button-base cancel-btn"
+      >
+        Cancel
+      </button>
+      </div>
 
                 </form>
             </div>
+      {/* {isLoading && <LoadingAnimation />} */}
+      {isLoading && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+    <LoadingAnimation />
+  </div>
+)}
         </div>
     );
 }

@@ -31,7 +31,9 @@ import Paymentform from "./components/Payments/Paymentform";
 import AddCustomers from './components/Customer/AddCustomers';
 import UpdateOrder from "./components/Orders/UpdateOrder";
 import Returns  from "./components/Returns/Returns"
-import Production from "./components/Production/Production"
+import Production from "./components/Production/Production";
+import { LoadingProvider } from './Context/LoadingContext';
+import {OrderProvider} from './Context/orderContext'
 function App() {
   const location = useLocation();
   const showNavigation = location.pathname !== "/";
@@ -45,6 +47,8 @@ function App() {
             <CustomerProvider>
               <RoleProvider>
 <PaymentProvider>
+<LoadingProvider>
+  <OrderProvider>
                 <Routes>
                   <Route path="/" element={<Login />} />
                   <Route path="/product" element={<ProductPage />} />
@@ -77,6 +81,8 @@ function App() {
 
 
                 </Routes>
+                </OrderProvider>
+    </LoadingProvider>
                 </PaymentProvider>
               </RoleProvider>
             </CustomerProvider>
