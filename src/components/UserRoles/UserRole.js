@@ -183,10 +183,10 @@ function UserRoles() {
         // `https://imlystudios-backend-mqg4.onrender.com/api/userrole/getRoleById/${roleId}`
      `${ GETALLROLESBYID_API}/${roleId}`
       );
-      console.log("UserRole retrieved successfully:", response.data);
+      
       return response.data;
     } catch (error) {
-      console.error("Error fetching UserRole:", error);
+      
       throw error;
     }
   };
@@ -206,15 +206,10 @@ function UserRoles() {
   };
 
   // Handle edit button click
-  const handleEditClick = async (roleId) => {
-    try {
-      const roleDetails = await getRoleById(roleId);
-      setRoleDetails(roleDetails);
-      navigate("/UserRoleform");
-    } catch (error) {
-      console.error("Error fetching UserRole details:", error);
-    }
+  const handleEditClick = async (roleId,roleName) => {
+    navigate("/editroleform", { state: { roleId,roleName } });
   };
+
 
   // Handle delete button click
   const handleDeleteClick = async (roleId) => {
@@ -245,56 +240,11 @@ function UserRoles() {
 
   const handleAddUserRoleClick = () => {
     setRoleDetails(null);
-    navigate("/UserRoleform");
+    navigate("/addroleform");
   };
 
   return (
-    // <div className="px-4 sm:px-6 lg:px-8 pt-4 ml-10 lg:ml-72 w-auto">
-    //   <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-    //     <div className="flex justify-between items-center">
-    //       <h2 className="text-xl font-semibold">UserRoles</h2>
-    //       <div className="flex items-center space-x-4">
-    //         <div className="relative flex flex-col w-[20rem] -ml-4">
-    //           <label
-    //             htmlFor="searchName"
-    //             className="text-sm font-medium"
-    //           ></label>
-    //           <input
-    //             id="searchName"
-    //             type="text"
-    //             placeholder="Search by Name or Email or Mobile"
-    //             value={searchName}
-    //             onChange={(e) => setSearchName(e.target.value)}
-    //             className="mt-1 p-2 pr-10 border border-gray-300 rounded-md"
-    //           />
-    //           <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-    //             <IoIosSearch />
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <ul className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-2 list-none">
-    //         <li>
-    //           <button
-    //             type="button"
-    //             className="inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-lightblue hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-    //             onClick={handleAddUserRoleClick}
-    //           >
-    //             <FaPlus aria-hidden="true" className="-ml-0.5 h-4 w-4" />
-    //             Add UserRoles
-    //           </button>
-    //         </li>
-    //         <li>
-    //           <button
-    //             type="button"
-    //             className="inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-lightblue hover:text-gray-700"
-    //             onClick={handleExportUserRolesData}
-    //           >
-    //             <FaTable aria-hidden="true" className="-ml-0.5 h-4 w-4" />
-    //             Export UserRoles
-    //           </button>
-    //         </li>
-    //       </ul>
-    //     </div>
+   
     <div className="px-4 sm:px-6 lg:px-8 pt-4 ml-10 lg:ml-72 w-auto">
         <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
@@ -337,7 +287,7 @@ function UserRoles() {
         className="w-full inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-hoverblue"
       >
         <FaTable aria-hidden="true" className="-ml-0.5 h-4 w-4" />
-        Export
+        Export Role
       </button>
     </li>
   </ul>
@@ -348,10 +298,10 @@ function UserRoles() {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>Role ID</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>Actions</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                <StyledTableCell align="center" colSpan={2}>Actions</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -359,7 +309,7 @@ function UserRoles() {
                 <StyledTableRow key={row.RoleID}>
                   <StyledTableCell>{row.RoleID}</StyledTableCell>
                   <StyledTableCell>{row.RoleName}</StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="center">
                     <span
                       className={`inline-block px-3 py-2 text-xs font-semibold rounded-full ${
                         row.Status === "Active"
@@ -370,11 +320,11 @@ function UserRoles() {
                       {row.Status}
                     </span>
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="center">
                     <button
                       type="button"
-                      onClick={() => handleEditClick(row.RoleID)}
-                      className="inline-flex items-center gap-x-1 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-blue-500"
+                      onClick={() => handleEditClick(row.RoleID,row.RoleName)}
+                      className=" m-0.5 inline-flex items-center gap-x-1 rounded-md hover:bg-sky-600 hover:text-white px-2 py-1 text-xs font-semibold  shadow-sm bg-[#d6eaf8] text-sky-900   "
                     >
                       <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
                       Edit
@@ -382,7 +332,7 @@ function UserRoles() {
                     <button
                       type="button"
                       onClick={() => handleDeleteClick(row.RoleID)}
-                      className="inline-flex items-center gap-x-1 ml-2 rounded-md bg-red-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-red-500"
+                      className="inline-flex items-center gap-x-1 m-0.5 rounded-md hover:bg-rose-600 hover:text-white px-2 py-1 text-xs font-semibold  shadow-sm bg-pink-100  text-rose-900 "
                     >
                       <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
                       Delete
