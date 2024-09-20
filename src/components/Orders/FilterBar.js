@@ -1,118 +1,3 @@
-// import React from 'react';
-// import { FaList, FaTruck,FaClock, FaBan } from 'react-icons/fa';
-
-// const FilterBar = ({ selectedFilter, onFilterChange }) => {
-//   return (
-//     <div className="flex space-x-4 p-4 bg-gray-100 rounded-md">
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'All'
-//             ? 'bg-red-500 text-white'
-//             : 'bg-white text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('All')}
-//       >
-//         <FaList/>
-//         All
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Delivered'
-//             ? 'bg-red-500 text-white'
-//             : 'bg-white text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Delivered')}
-//       >
-//         <FaTruck/>
-//         Delivered
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Pending'
-//             ? 'bg-red-500 text-white'
-//             : 'bg-white text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Pending')}
-//       >
-//         <FaClock/>
-//         Pending
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Canceled'
-//             ? 'bg-red-500 text-white'
-//             : 'bg-white text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Canceled')}
-//       >
-//         <FaBan/>
-//         Canceled
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default FilterBar;
-
-
-// import React from 'react';
-// import { FaList, FaTruck,FaClock, FaBan } from 'react-icons/fa';
-
-// const FilterBar = ({ selectedFilter, onFilterChange }) => {
-//   return (
-//     <div className="flex space-x-4 p-4 bg-gray-100 rounded-md">
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'All'
-//             ? 'bg-custom-darkblue text-white hover:bg-custom-lightblue hover:text-gray-700'
-//             : 'bg-white text-gray-700 hover:bg-custom-lightblue hover:text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('All')}
-//       >
-//         <FaList/>
-//         All
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Dispatched'
-//        ? 'bg-custom-darkblue text-white hover:bg-custom-lightblue hover:text-gray-700'
-//             : 'bg-white text-gray-700 hover:bg-custom-lightblue hover:text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Dispatched')}
-//       >
-//         <FaTruck/>
-//         Dispatched
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Pending'
-//          ? 'bg-custom-darkblue text-white hover:bg-custom-lightblue hover:text-gray-700'
-//             : 'bg-white text-gray-700 hover:bg-custom-lightblue hover:text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Pending')}
-//       >
-//         <FaClock/>
-//         Pending
-//       </button>
-//       <button
-//         className={`inline-flex items-center gap-x-1.5 px-4 py-2 text-sm font-semibold rounded-md ${
-//           selectedFilter === 'Canceled'
-//         ? 'bg-custom-darkblue text-white hover:bg-custom-lightblue hover:text-gray-700'
-//             : 'bg-white text-gray-700 hover:bg-custom-lightblue hover:text-gray-700'
-//         }`}
-//         onClick={() => onFilterChange('Canceled')}
-//       >
-//         <FaBan/>
-//         Cancelled
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default FilterBar;
-
-
-
 import React, { useState } from "react";
 import { FaList, FaTruck, FaBan } from "react-icons/fa";
 import { MdDesignServices } from "react-icons/md";
@@ -140,7 +25,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import StraightenIcon from "@mui/icons-material/Straighten";
 import CameraOutdoorIcon from "@mui/icons-material/CameraOutdoor";
 
-
 const FilterBar = ({ selectedFilter, onFilterChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -157,11 +41,12 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
     color: "#1f2937",
     boxShadow: "none",
     // border: "1px solid #003375",
-    borderRadius: "0.375rem",
+    borderRadius: "9999px",
     padding: "12px", // Adjusted padding for height
     fontSize: "14px", // Increased font size for better visibility
     marginRight: "10px", // Consistent gap between buttons
     marginBottom: "5px",
+    width: "140px",
   };
 
   const buttonStylesInside = {
@@ -169,13 +54,15 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
     color: "#1f2937",
     boxShadow: "none",
     // border: "1px solid #003375",
-    borderRadius: "0.375rem",
+    borderRadius: "9999px",
     padding: "12px", // Adjusted padding for height
     fontSize: "14px", // Increased font size for better visibility
     marginTop: "10px", // Consistent gap between buttons
     marginRight: "5px",
     marginLeft: "5px",
-            // backgroundColor:"white"
+    // boxShadow: "0 0 0 1px #92400e inset",
+    boxShadow: "0 0 0 1px black inset",
+    // backgroundColor:"white"
   };
 
   return (
@@ -189,8 +76,9 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
         style={{
           ...buttonStyles,
           textTransform: "capitalize",
-          backgroundColor: selectedFilter === "All" ? "#003375" : "#f6ddcc",
-          color: selectedFilter === "All" ? "white" : "#6e2c00  ",
+          backgroundColor: selectedFilter === "All" ? "#db2777" : "#fbcfe8",
+          color: selectedFilter === "All" ? "white" : "#9d174d",
+          boxShadow: "0 0 0 1px #9d174d inset",
         }}
         onClick={() => onFilterChange("All")}
       >
@@ -202,9 +90,11 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
         startIcon={<PendingActionsIcon />}
         style={{
           ...buttonStyles,
+
           textTransform: "capitalize",
-          backgroundColor: selectedFilter === "Pending" ? "#003375" : "#d5f5e3",
+          backgroundColor: selectedFilter === "Pending" ? "#15803d" : "#d5f5e3",
           color: selectedFilter === "Pending" ? "white" : "#186a3b",
+          boxShadow: "0 0 0 1px #186a3b inset",
         }}
         onClick={() => onFilterChange("Pending")}
       >
@@ -218,8 +108,9 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
           ...buttonStyles,
           textTransform: "capitalize",
           backgroundColor:
-            selectedFilter === "Quick Quote" ? "#003375" : "#d6eaf8 ",
-          color: selectedFilter === "Quick Quote" ? "white" : "#1b4f72 ",
+            selectedFilter === "Quick Quote" ? "#0891b2" : "#cffafe",
+          color: selectedFilter === "Quick Quote" ? "white" : "#155e75",
+          boxShadow: "0 0 0 1px #155e75 inset",
         }}
         onClick={() => onFilterChange("Quick Quote")}
       >
@@ -233,8 +124,9 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
           ...buttonStyles,
           textTransform: "capitalize",
           backgroundColor:
-            selectedFilter === "Initial Design" ? "#003375" : "#e8daef ",
-          color: selectedFilter === "Initial Design" ? "white" : "#4a235a",
+            selectedFilter === "Initial Design" ? "#86198f  " : "#e8daef ",
+          color: selectedFilter === "Initial Design" ? "white" : "#86198f",
+          boxShadow: "0 0 0 1px #4a235a inset",
         }}
         onClick={() => onFilterChange("Initial Design")}
       >
@@ -250,8 +142,24 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
         style={{
           ...buttonStyles,
           textTransform: "capitalize",
-          backgroundColor: "#fce7f3",
-          color: "#9d174d",
+          // backgroundColor: "#fce7f3",
+          // color: "#9d174d",
+          color: "#92400e",
+          boxShadow: "0 0 0 1px #92400e inset",
+          backgroundColor:
+            selectedFilter !== "All" &&
+            selectedFilter !== "Pending" &&
+            selectedFilter !== "Quick Quote" &&
+            selectedFilter !== "Initial Design"
+              ? "#92400e"
+              : "#fef3c7",
+          color:
+            selectedFilter !== "All" &&
+            selectedFilter !== "Pending" &&
+            selectedFilter !== "Quick Quote" &&
+            selectedFilter !== "Initial Design"
+              ? "white"
+              : "#92400e",
         }}
       >
         More
@@ -266,7 +174,7 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
           style: {
             maxHeight: "200px",
             width: "220px",
-            // backgroundColor: "#fce7f3",
+            backgroundColor: "#f1f5f9",
           },
         }}
       >
@@ -279,6 +187,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Initial Measurement"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Initial Measurement" ? "white" : "#92400e",
           }}
         >
           <StraightenIcon sx={{ mr: 1 }} />
@@ -293,6 +208,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Revised Design"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Revised Design" ? "white" : "#92400e",
           }}
         >
           <EngineeringIcon sx={{ mr: 1 }} />
@@ -307,6 +229,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Final Measurement"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Final Measurement" ? "white" : "#92400e",
           }}
         >
           <DesignIcon sx={{ mr: 1 }} />
@@ -321,6 +250,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Signup Document"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Signup Document" ?"white" : "#92400e",
           }}
         >
           <FactCheckIcon sx={{ mr: 1 }} />
@@ -335,6 +271,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Production"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Production" ? "white" : "#92400e",
           }}
         >
           <ProductionIcon sx={{ mr: 1 }} />
@@ -349,6 +292,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "PDI"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "PDI" ? "white" : "#92400e",
           }}
         >
           <CameraOutdoorIcon sx={{ mr: 1 }} />
@@ -363,6 +313,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Dispatch"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Dispatch" ? "white" : "#92400e",
           }}
         >
           <LocalShippingIcon sx={{ mr: 1 }} />
@@ -377,6 +334,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Installation"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Installation" ? "white" : "#92400e",
           }}
         >
           <InventoryIcon sx={{ mr: 1 }} />
@@ -392,6 +356,13 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor: "#fef3c7",
+            // backgroundColor:
+            //   selectedFilter === "Completed"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Completed" ? "white" : "#92400e",
           }}
         >
           <ThumbUpIcon sx={{ mr: 1 }} />
@@ -406,6 +377,12 @@ const FilterBar = ({ selectedFilter, onFilterChange }) => {
             ...buttonStylesInside,
             padding: "10px 15px",
             fontSize: "14px",
+            // color: "#92400e",
+            // backgroundColor:
+            //   selectedFilter === "Cancelled"
+            //     ? "#92400e  "
+            //     : "#fef3c7 ",
+            // color: selectedFilter === "Cancelled" ? "white" : "#92400e",
           }}
         >
           <GppBadIcon sx={{ mr: 1 }} />
