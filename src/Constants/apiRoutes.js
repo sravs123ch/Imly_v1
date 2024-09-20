@@ -41,3 +41,4 @@ export const GETPAYMENTSBYID_API = `${BASE_URL}/payments/getPaymentById`;
 export const CITIES_API = `${BASE_URL}/cities/getCitiesByState?$filter=StateID eq`;
 export const STATES_API = `${BASE_URL}/cities/getStatesByCountry?$filter=CountryID eq`;
 export const COUNTRIES_API = `${BASE_URL}/cities/getCountries`;
+export const GETORDERBYID_API = `${BASE_URL}/orders/getOrderById`;

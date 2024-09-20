@@ -32,6 +32,11 @@ import AddCustomers from './components/Customer/AddCustomers';
 import UpdateOrder from "./components/Orders/UpdateOrder";
 import Returns  from "./components/Returns/Returns"
 import Production from "./components/Production/Production"
+import { LoadingProvider } from './Context/LoadingContext';
+import {OrderProvider} from './Context/orderContext';
+import AddRoleForm from './components/UserRoles/AddRoleForm';
+import EditRoleForm from './components/UserRoles/EditRoleForm';
+
 function App() {
   const location = useLocation();
   const showNavigation = location.pathname !== "/";
