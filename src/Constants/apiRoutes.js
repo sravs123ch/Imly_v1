@@ -1,5 +1,5 @@
 export const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-console.log("BASE_URL:", BASE_URL);
+
 
 // export const LOGIN = '${BASE_URL}/auth/login';
 export const LOGIN = `${BASE_URL}/auth/login`;
@@ -41,4 +41,3 @@ export const GETPAYMENTSBYID_API = `${BASE_URL}/payments/getPaymentById`;
 export const CITIES_API = `${BASE_URL}/cities/getCitiesByState?$filter=StateID eq`;
 export const STATES_API = `${BASE_URL}/cities/getStatesByCountry?$filter=CountryID eq`;
 export const COUNTRIES_API = `${BASE_URL}/cities/getCountries`;
-export const GETORDERBYID_API = `${BASE_URL}/orders/getOrderById`;

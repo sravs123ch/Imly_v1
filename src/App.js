@@ -31,9 +31,7 @@ import Paymentform from "./components/Payments/Paymentform";
 import AddCustomers from './components/Customer/AddCustomers';
 import UpdateOrder from "./components/Orders/UpdateOrder";
 import Returns  from "./components/Returns/Returns"
-import Production from "./components/Production/Production";
-import { LoadingProvider } from './Context/LoadingContext';
-import {OrderProvider} from './Context/orderContext'
+import Production from "./components/Production/Production"
 function App() {
   const location = useLocation();
   const showNavigation = location.pathname !== "/";
@@ -65,7 +63,8 @@ function App() {
                   <Route path="/Paymentform" element={<Paymentform />} />
                   {/* <Route path="/User-roleform" element={<UserRole/>} /> */}
                   <Route path="/UserRole" element={<UserRoles />} />
-                  <Route path="/UserRoleform" element={<UserRoleform />} />
+                  <Route path="/AddRoleform" element={<AddRoleForm />} />
+                  <Route path="/editroleform" element={<EditRoleForm />} />
                   <Route path="/Customerform" element={<AddCustomers/>} />
                   <Route path="/Userform" element={<Userform />} />
                   <Route path="/Storeform" element={<Storeform />} />

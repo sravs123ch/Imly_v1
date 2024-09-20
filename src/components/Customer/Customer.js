@@ -197,7 +197,7 @@ const getAllCustomers = async (pageNum, pageSize) => {
     fetchCustomers();
   }, [page, rowsPerPage]);
   
-  console.log(paginatedPeople, "pp");
+  
   
   // useEffect(() => {
   //   setPaginatedPeople(
