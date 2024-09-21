@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // For redirection
 
 const AddRoleForm = () => {
   const [roleName, setRoleName] = useState("");
   const [permissionsByModule, setPermissionsByModule] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saveStatus, setSaveStatus] = useState(""); // To display save status messages
 
-  const apiUrl = "https://imly-b2y.onrender.com/api/permissions/getAllPermissions";
+  const fetchPermissionsUrl = "https://imly-b2y.onrender.com/api/permissions/getAllPermissions";
+  const createOrUpdateRoleUrl = "https://imly-b2y.onrender.com/api/permissions/createOrUpdateRolePermissions";
+
+  const navigate = useNavigate(); // For redirection
 
   useEffect(() => {
     const fetchPermissions = async () => {
       try {
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(fetchPermissionsUrl);
         const data = response.data;
 
         const categorizedPermissions = {};
@@ -66,6 +71,45 @@ const AddRoleForm = () => {
     });
   };
 
+  // Handle saving the role
+  const handleSaveRole = async () => {
+    const permissions = [];
+
+    Object.keys(permissionsByModule).forEach((module) => {
+      permissionsByModule[module].forEach((permission) => {
+        permissions.push({
+          permissionId: permission.ID,
+          isChecked: permission.IsChecked,
+        });
+      });
+    });
+
+    const roleData = {
+      roleId: 0, // Adjust roleId based on your use case
+      roleName: roleName,
+      storeId: 1, // Change this if you have dynamic store ID
+      permissions: permissions,
+    };
+
+    try {
+      const response = await axios.post(createOrUpdateRoleUrl, roleData);
+      setSaveStatus("Role saved successfully!");
+
+      
+      setTimeout(() => {
+        navigate("/userrole"); 
+      }, 1500); 
+    } catch (error) {
+      console.error("Error saving role:", error);
+      setSaveStatus("Error saving role. Please try again.");
+    }
+  };
+
+  
+  const handleClose = () => {
+    navigate("/userrole"); 
+  };
+
   if (loading) return <div>Loading...</div>;
 
   if (error) return <div>{error}</div>;
@@ -90,7 +134,8 @@ const AddRoleForm = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.keys(permissionsByModule).map((moduleName) => {
-            // Check if all permissions in this module are selected
+            
+            
             const isAllSelected = permissionsByModule[moduleName].every(
               (permission) => permission.IsChecked
             );
@@ -131,8 +176,17 @@ const AddRoleForm = () => {
         </div>
 
         <div className="mt-10 flex justify-end space-x-4">
-          <button className="bg-gray-200 px-4 py-2 rounded shadow">Close</button>
-          <button className="bg-[#003375] text-white px-4 py-2 rounded shadow">
+          {saveStatus && <div className="text-red-500">{saveStatus}</div>} {/* Display save status */}
+          <button
+            className="bg-gray-200 px-4 py-2 rounded shadow"
+            onClick={handleClose} // Close button redirects to 'userrole'
+          >
+            Close
+          </button>
+          <button
+            className="bg-[#003375] text-white px-4 py-2 rounded shadow"
+            onClick={handleSaveRole}
+          >
             Save Role
           </button>
         </div>

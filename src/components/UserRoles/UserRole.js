@@ -25,7 +25,11 @@ import { IoIosSearch } from "react-icons/io";
 import { FaTable } from "react-icons/fa";
 import axios from "axios";
 import { UserRoleContext } from "../../Context/roleContext";
-import { GETALLROLESS_API,GETALLROLESBYID_API,DELETEROLESBYID_API } from '../../Constants/apiRoutes';
+import {
+  GETALLROLESS_API,
+  GETALLROLESBYID_API,
+  DELETEROLESBYID_API,
+} from "../../Constants/apiRoutes";
 import { MdOutlineCancel } from "react-icons/md";
 import "../../style.css";
 import {
@@ -137,7 +141,7 @@ function UserRoles() {
     try {
       const response = await axios.get(
         // "https://imlystudios-backend-mqg4.onrender.com/api/userrole/getAllRoles",
-        GETALLROLESS_API ,
+        GETALLROLESS_API,
         {
           params: {
             page: pageNum + 1,
@@ -151,9 +155,7 @@ function UserRoles() {
         roles: response.data.roles,
         totalCount: response.data.totalItems,
       };
-    } catch (error) {
-      console.error("Error fetching roles:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -188,12 +190,11 @@ function UserRoles() {
     try {
       const response = await axios.get(
         // `https://imlystudios-backend-mqg4.onrender.com/api/userrole/getRoleById/${roleId}`
-     `${ GETALLROLESBYID_API}/${roleId}`
+        `${GETALLROLESBYID_API}/${roleId}`
       );
-      
+
       return response.data;
     } catch (error) {
-      
       throw error;
     }
   };
@@ -203,7 +204,7 @@ function UserRoles() {
     try {
       const response = await axios.delete(
         // `https://imlystudios-backend-mqg4.onrender.com/api/userrole/deleteRole/${roleId}`
-          `${DELETEROLESBYID_API}/${roleId}`
+        `${DELETEROLESBYID_API}/${roleId}`
       );
       return response.data;
     } catch (error) {
@@ -213,10 +214,9 @@ function UserRoles() {
   };
 
   // Handle edit button click
-  const handleEditClick = async (roleId,roleName) => {
-    navigate("/editroleform", { state: { roleId,roleName } });
+  const handleEditClick = async (roleId, roleName) => {
+    navigate("/editroleform", { state: { roleId, roleName } });
   };
-
 
   // Handle delete button click
   const handleDeleteClick = async (roleId) => {
@@ -251,103 +251,122 @@ function UserRoles() {
   };
 
   return (
-   
     <div className="px-4 sm:px-6 lg:px-8 pt-4 ml-10 lg:ml-72 w-auto">
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-<div className="body-container">
-  <h2 className="heading">Roles</h2>
-  <div className="search-button-group">
-    <div className="search-container">
-      <label htmlFor="searchName" className="sr-only">
-        Search
-      </label>
-      <input
-        id="searchName"
-        type="text"
-        placeholder="Search by Name or Email or Mobile"
-        value={searchName}
-        onChange={(e) => setSearchName(e.target.value)}
-        className="search-input"
-      />
-      <div className="search-icon-container">
-        <IoIosSearch />
-      </div>
-    </div>
+      <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
 
-    <ul className="button-list">
-      <li>
-        <button
-          type="button"
-          className="action-button"
-          onClick={handleAddUserRoleClick}
+        <div className="body-container">
+          <h2 className="heading">Roles</h2>
+          <div className="search-button-group">
+            <div className="search-container">
+              <label htmlFor="searchName" className="sr-only">
+                Search
+              </label>
+              <input
+                id="searchName"
+                type="text"
+                placeholder="Search by Name or Email or Mobile"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className="search-input"
+              />
+              <div className="search-icon-container">
+                <IoIosSearch />
+              </div>
+            </div>
+
+            <ul className="button-list">
+              <li>
+                <button
+                  type="button"
+                  className="action-button"
+                  onClick={handleAddUserRoleClick}
+                >
+                  <FaPlus aria-hidden="true" className="icon" />
+                  Add Roles
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="action-button"
+                  onClick={handleExportUserRolesData}
+                >
+                  <FaTable aria-hidden="true" className="icon" />
+                  Export Roles
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <TableContainer
+          component={Paper}
+          className="mt-4"
+          sx={{ width: "100%", margin: "0 auto", marginTop: "1rem" }}
         >
-          <FaPlus aria-hidden="true" className="icon" />
-          Add Roles
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          className="action-button"
-          onClick={handleExportUserRolesData}
-        >
-          <FaTable aria-hidden="true" className="icon" />
-          Export Roles
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
-
-
-
-        {/* <TableContainer component={Paper} className="mt-4">
-          <Table>
+          <Table sx={{ width: "100%", tableLayout: "fixed" }}>
             <TableHead>
               <TableRow>
-                <StyledTableCell>Role ID</StyledTableCell>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell align="center">Status</StyledTableCell>
-                <StyledTableCell align="center" colSpan={2}>Actions</StyledTableCell>
+                <StyledTableCell sx={{ width: "20%" }} align="left">
+                  Role ID
+                </StyledTableCell>
+                <StyledTableCell sx={{ width: "20%" }} align="left">
+                  Name
+                </StyledTableCell>
+                <StyledTableCell sx={{ width: "20%" }} align="center">
+                  Status
+                </StyledTableCell>
+                <StyledTableCell
+                  sx={{ width: "20%" }}
+                  align="center"
+                  colSpan={2}
+                >
+                  Actions
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {roles.map((row) => (
                 <StyledTableRow key={row.RoleID}>
-                  <StyledTableCell>{row.RoleID}</StyledTableCell>
-                  <StyledTableCell>{row.RoleName}</StyledTableCell>
-                  <StyledTableCell>
-                  
+                  <StyledTableCell align="left">{row.RoleID}</StyledTableCell>
+                  <StyledTableCell align="left">{row.RoleName}</StyledTableCell>
+                  <StyledTableCell align="center">
                     <span
-  className={`status-pill ${
-    row.Status === "Active" ? "status-active" : "status-inactive"
-  }`}
->
-  {row.Status}
-</span>
-
+                      className={`status-pill ${
+                        row.Status === "Active"
+                          ? "status-active"
+                          : "status-inactive"
+                      }`}
+                    >
+                      {row.Status}
+                    </span>
                   </StyledTableCell>
-                  <StyledTableCell>
-                 
-<div className="button-container">
-  <button
-    type="button"
-    onClick={() => handleEditClick(row.RoleID)}
-    className="button edit-button"
-  >
-    <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-    Edit
-  </button>
+                  <StyledTableCell align="center" colSpan={2}>
+                    <div className="flex justify-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => handleEditClick(row.RoleID, row.RoleName)}
+                        className="button edit-button flex items-center"
+                      >
+                        <AiOutlineEdit
+                          aria-hidden="true"
+                          className="h-4 w-4 mr-1"
+                        />
+                        Edit
+                      </button>
 
-  <button
-    type="button"
-    onClick={() => handleDeleteClick(row.RoleID)}
-    className="button delete-button"
-  >
-    <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
-    Delete
-  </button>
-</div>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteClick(row.RoleID)}
+                        className="button delete-button flex items-center"
+                      >
+                        <MdOutlineCancel
+                          aria-hidden="true"
+                          className="h-4 w-4 mr-1"
+                        />
+                        Delete
+                      </button>
+                    </div>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -367,75 +386,7 @@ function UserRoles() {
               </TableRow>
             </TableFooter>
           </Table>
-        </TableContainer> */}
-
-
-<TableContainer component={Paper} className="mt-4" sx={{ width: '80%',margin: '0 auto', marginTop: '1rem' }}>
-  <Table sx={{ width: '100%', tableLayout: 'fixed' }}>
-    <TableHead>
-      <TableRow>
-        <StyledTableCell sx={{ width: '20%' }} align="left">Role ID</StyledTableCell>
-        <StyledTableCell sx={{ width: '20%' }} align="left">Name</StyledTableCell>
-        <StyledTableCell sx={{ width: '20%' }} align="center">Status</StyledTableCell>
-        <StyledTableCell sx={{ width: '20%' }} align="center" colSpan={2}>Actions</StyledTableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {roles.map((row) => (
-        <StyledTableRow key={row.RoleID}>
-          <StyledTableCell align="left">{row.RoleID}</StyledTableCell>
-          <StyledTableCell align="left">{row.RoleName}</StyledTableCell>
-          <StyledTableCell align="center">
-            <span
-              className={`status-pill ${
-                row.Status === "Active" ? "status-active" : "status-inactive"
-              }`}
-            >
-              {row.Status}
-            </span>
-          </StyledTableCell>
-          <StyledTableCell align="center" colSpan={2}>
-            <div className="flex justify-center space-x-2">
-              <button
-                type="button"
-                onClick={() => handleEditClick(row.RoleID)}
-                className="button edit-button flex items-center"
-              >
-                <AiOutlineEdit aria-hidden="true" className="h-4 w-4 mr-1" />
-                Edit
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDeleteClick(row.RoleID)}
-                className="button delete-button flex items-center"
-              >
-                <MdOutlineCancel aria-hidden="true" className="h-4 w-4 mr-1" />
-                Delete
-              </button>
-            </div>
-          </StyledTableCell>
-        </StyledTableRow>
-      ))}
-    </TableBody>
-    <TableFooter>
-      <TableRow>
-        <TablePagination
-          rowsPerPageOptions={[10, 20, 25]}
-          colSpan={4}
-          count={totalRoles}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          ActionsComponent={TablePaginationActions}
-        />
-      </TableRow>
-    </TableFooter>
-  </Table>
-</TableContainer>
-
-
+        </TableContainer>
       </div>
     </div>
   );

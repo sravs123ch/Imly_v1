@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
@@ -26,16 +25,16 @@ import { RoleProvider } from "./Context/roleContext";
 import UserRoleform from "./components/UserRoles/UserRoleform";
 import UserRoles from "./components/UserRoles/UserRole";
 
-import {PaymentProvider} from "./Context/paymentContext";
+import { PaymentProvider } from "./Context/paymentContext";
 import Paymentform from "./components/Payments/Paymentform";
-import AddCustomers from './components/Customer/AddCustomers';
+import AddCustomers from "./components/Customer/AddCustomers";
 import UpdateOrder from "./components/Orders/UpdateOrder";
-import Returns  from "./components/Returns/Returns"
-import Production from "./components/Production/Production"
-import { LoadingProvider } from './Context/LoadingContext';
-import {OrderProvider} from './Context/orderContext';
-import AddRoleForm from './components/UserRoles/AddRoleForm';
-import EditRoleForm from './components/UserRoles/EditRoleForm';
+import Returns from "./components/Returns/Returns";
+import Production from "./components/Production/Production";
+import { LoadingProvider } from "./Context/LoadingContext";
+import { OrderProvider } from "./Context/orderContext";
+import AddRoleForm from "./components/UserRoles/AddRoleForm";
+import EditRoleForm from "./components/UserRoles/EditRoleForm";
 
 function App() {
   const location = useLocation();
@@ -49,44 +48,46 @@ function App() {
           <StoreProvider>
             <CustomerProvider>
               <RoleProvider>
-<PaymentProvider>
-<LoadingProvider>
-  <OrderProvider>
-                <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="/product" element={<ProductPage />} />
-                  <Route path="/products" element={<AddProduct />} />
-                  <Route path="/user" element={<User />} />
-                  <Route path="/Customer" element={<Customer />} />
-                  <Route path="/Orders" element={<Orders />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/add-product" element={<AddEditProduct />} />
-                  <Route path="/AddOrders" element={<AddOrders />} />
-                  <Route path="/Stores" element={<Stores />} />
-                  <Route path="/Reports" element={<Reports />} />
-                  <Route path="/Payments" element={<Payments />} />
-                  <Route path="/Paymentform" element={<Paymentform />} />
-                  {/* <Route path="/User-roleform" element={<UserRole/>} /> */}
-                  <Route path="/UserRole" element={<UserRoles />} />
-                  <Route path="/AddRoleform" element={<AddRoleForm />} />
-                  <Route path="/editroleform" element={<EditRoleForm />} />
-                  <Route path="/Customerform" element={<AddCustomers/>} />
-                  <Route path="/Userform" element={<Userform />} />
-                  <Route path="/Storeform" element={<Storeform />} />
-                  {/* <Route path="/Customerform" element={<Customerform />} /> */}
-                  <Route path="/update-order" element={<UpdateOrder />} />
-                  <Route path="/Returns" element={<Returns />} />
-                  <Route path="/production" element={<Production />} />
-
-                  
-
-
-
-
-
-                </Routes>
-                </OrderProvider>
-    </LoadingProvider>
+                <PaymentProvider>
+                  <LoadingProvider>
+                    <OrderProvider>
+                      <Routes>
+                        <Route path="/" element={<Login />} />
+                        <Route path="/product" element={<ProductPage />} />
+                        <Route path="/products" element={<AddProduct />} />
+                        <Route path="/user" element={<User />} />
+                        <Route path="/Customer" element={<Customer />} />
+                        <Route path="/Orders" element={<Orders />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route
+                          path="/add-product"
+                          element={<AddEditProduct />}
+                        />
+                        <Route path="/AddOrders" element={<AddOrders />} />
+                        <Route path="/Stores" element={<Stores />} />
+                        <Route path="/Reports" element={<Reports />} />
+                        <Route path="/Payments" element={<Payments />} />
+                        <Route path="/Paymentform" element={<Paymentform />} />
+                        {/* <Route path="/User-roleform" element={<UserRole/>} /> */}
+                        <Route path="/UserRole" element={<UserRoles />} />
+                        <Route path="/addroleform" element={<AddRoleForm />} />
+                        <Route
+                          path="/editroleform"
+                          element={<EditRoleForm />}
+                        />
+                        <Route
+                          path="/Customerform"
+                          element={<AddCustomers />}
+                        />
+                        <Route path="/Userform" element={<Userform />} />
+                        <Route path="/Storeform" element={<Storeform />} />
+                        {/* <Route path="/Customerform" element={<Customerform />} /> */}
+                        <Route path="/update-order" element={<UpdateOrder />} />
+                        <Route path="/Returns" element={<Returns />} />
+                        <Route path="/production" element={<Production />} />
+                      </Routes>
+                    </OrderProvider>
+                  </LoadingProvider>
                 </PaymentProvider>
               </RoleProvider>
             </CustomerProvider>
@@ -98,7 +99,6 @@ function App() {
 }
 
 export default App;
-
 
 // import React from "react";
 // import { Routes, Route, useLocation } from "react-router-dom";
@@ -219,7 +219,7 @@ export default App;
 //                     </ProtectedRoute>
 //                   }
 //                 />
-              
+
 //                 <Route
 //                   path="/Stores/Add"
 //                   element={

@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const EditRoleForm = () => {
   const location = useLocation();
-  const { roleId,roleName } = location.state || {};
-//   const { roleId} = location.state || {};
-  const [updatedRoleName, setUpdatedRoleName]=useState(roleName);
+  const navigate = useNavigate(); // For navigation on success or close
+  const { roleId, roleName } = location.state || {};
+  const [updatedRoleName, setUpdatedRoleName] = useState(roleName);
   const [permissionsByModule, setPermissionsByModule] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
-
-
-
-  
-
-  const fetchPermissionsUrl = `https://imly-b2y.onrender.com/api/permissions/getAllPermissionsByRoleId/${roleId}`; 
-  const updateRoleUrl = `https://imly-b2y.onrender.com/api/roles/${roleId}/updatePermissions`; 
-
-  
-  
+  const fetchPermissionsUrl = `https://imly-b2y.onrender.com/api/permissions/getAllPermissionsByRoleId/${roleId}`;
+  const updateRoleUrl = `https://imly-b2y.onrender.com/api/permissions/createOrUpdateRolePermissions`;
 
   useEffect(() => {
     const fetchRolePermissions = async () => {
@@ -29,10 +22,9 @@ const EditRoleForm = () => {
         const data = response.data;
 
         const categorizedPermissions = {};
-
         if (data && Array.isArray(data)) {
           data.forEach((permission) => {
-            const module = permission.PermissionName.split(" ")[1]; 
+            const module = permission.PermissionName.split(" ")[1];
             if (!categorizedPermissions[module]) {
               categorizedPermissions[module] = [];
             }
@@ -43,7 +35,6 @@ const EditRoleForm = () => {
             });
           });
         }
-
         setPermissionsByModule(categorizedPermissions);
       } catch (err) {
         setError("Failed to fetch role permissions");
@@ -55,7 +46,6 @@ const EditRoleForm = () => {
     fetchRolePermissions();
   }, [roleId]);
 
-  // Handle checkbox state change for each permission
   const handleCheckboxChange = (moduleName, permissionId) => {
     setPermissionsByModule((prevState) => {
       const updatedPermissions = { ...prevState };
@@ -69,7 +59,6 @@ const EditRoleForm = () => {
     });
   };
 
-  // Handle "Select All" change for each module
   const handleSelectAllChange = (moduleName, isChecked) => {
     setPermissionsByModule((prevState) => {
       const updatedPermissions = { ...prevState };
@@ -83,10 +72,8 @@ const EditRoleForm = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     const updatedPermissions = [];
-
     Object.keys(permissionsByModule).forEach((moduleName) => {
       permissionsByModule[moduleName].forEach((permission) => {
         updatedPermissions.push({
@@ -98,14 +85,21 @@ const EditRoleForm = () => {
 
     try {
       await axios.post(updateRoleUrl, {
-        roleName,
+        roleName: updatedRoleName,
         permissions: updatedPermissions,
       });
-      alert("Role updated successfully");
+      setSuccessMessage("Role updated successfully");
+      setTimeout(() => {
+        navigate("/userrole"); // Redirect to user role page after success
+      }, 1500); // Delay for showing success message
     } catch (error) {
       console.error("Failed to update role permissions:", error);
       alert("Error updating role");
     }
+  };
+
+  const handleClose = () => {
+    navigate("/userrole"); // Navigate to UserRole page on close
   };
 
   if (loading) return <div>Loading...</div>;
@@ -122,7 +116,7 @@ const EditRoleForm = () => {
           <label className="block font-semibold mr-2">Role Name</label>
           <input
             type="text"
-            value={roleName}
+            value={updatedRoleName}
             onChange={(e) => setUpdatedRoleName(e.target.value)}
             className="border border-gray-300 p-2 w-1/2 rounded-md"
           />
@@ -177,8 +171,17 @@ const EditRoleForm = () => {
           })}
         </div>
 
+        {successMessage && (
+          <div className="mt-4 text-green-600 text-center">
+            {successMessage}
+          </div>
+        )}
+
         <div className="mt-10 flex justify-end space-x-4">
-          <button className="bg-gray-200 px-4 py-2 rounded shadow">
+          <button
+            className="bg-gray-200 px-4 py-2 rounded shadow"
+            onClick={handleClose}
+          >
             Close
           </button>
           <button
