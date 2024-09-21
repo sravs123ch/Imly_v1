@@ -37,6 +37,10 @@ export const GET_ALL_ORDERS = `${BASE_URL}/orders/getAllOrders`;
 export const SEARCH_CUSTOMERS = `${BASE_URL}/customers/getCustomerById`;
 
 export const GETPAYMENTSBYID_API = `${BASE_URL}/payments/getPaymentById`;
+export const GET_ALL_PAYMENTS_API = `${BASE_URL}/payments/payments`;
+
+export const GET_PAYMENTSBY_ORDERID_API = `${BASE_URL}/payments/payment`;
+
 
 export const CITIES_API = `${BASE_URL}/cities/getCitiesByState?$filter=StateID eq`;
 export const STATES_API = `${BASE_URL}/cities/getStatesByCountry?$filter=CountryID eq`;
