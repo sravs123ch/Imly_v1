@@ -23,9 +23,8 @@ import {
   
   ClipboardDocumentListIcon,
   CreditCardIcon, 
-  UserIcon
+  UserIcon,DocumentMagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
-import { TbReportSearch } from "react-icons/tb"
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import logo from '../../assests/Images/imly-logo-new.jpg';
 import { useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate and useLocation
@@ -38,7 +37,7 @@ const navigation = [
 
   { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon },
   { name: 'Payments', href: '/Payments', icon: CreditCardIcon  },
-  { name: 'Services', href: '/Returns', icon: TbReportSearch },
+  { name: 'Services', href: '/Returns', icon: DocumentMagnifyingGlassIcon },
 
   { name: 'Customers', href: '/Customer', icon: UsersIcon },
   { name: 'Reports', href: '/Reports', icon: FolderIcon },
