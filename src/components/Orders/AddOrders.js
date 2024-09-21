@@ -2576,7 +2576,7 @@ formData.append('TenantID', tenantID); // Append TenantID
           Payment Status
         </StyledTableCell>
         <StyledTableCell align="center" sx={{ color: 'white', fontWeight: 'bold', borderRight: '1px solid #ccc' }}>
-          Payment Card Number
+         Card Number
         </StyledTableCell>
         <StyledTableCell align="center" sx={{ color: 'white', fontWeight: 'bold', borderRight: '1px solid #ccc' }}>
           Payment Comments
