@@ -254,51 +254,6 @@ function UserRoles() {
    
     <div className="px-4 sm:px-6 lg:px-8 pt-4 ml-10 lg:ml-72 w-auto">
         <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-          {/* <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-  <h2 className="text-xl font-semibold mb-2 sm:mb-0">Roles</h2>
-
-  <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-2 sm:mb-0 w-full sm:w-auto">
-    <div className="relative flex w-full sm:w-[20rem]">
-      <label htmlFor="searchName" className="sr-only">Search</label>
-      <input
-        id="searchName"
-        type="text"
-        placeholder="Search by Name"
-        // value={formData.name}
-        value={searchName}
-        // onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        onChange={(e) => setSearchName(e.target.value)}
-        className="mt-1 p-2 pr-10 border border-gray-300 rounded-md w-full"
-      />
-      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        <IoIosSearch />
-      </div>
-    </div>
-  </div>
-
-  <ul className="flex flex-col sm:flex-row gap-2 list-none w-full sm:w-[20rem]">
-    <li className="w-full">
-      <button
-        type="button"
-        className="w-full inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-hoverblue"
-        onClick={handleAddUserRoleClick}
-      >
-        <FaPlus aria-hidden="true" className="-ml-0.5 h-4 w-4" />
-        Add Role
-      </button>
-    </li>
-    <li className="w-full">
-      <button
-        type="button"
-        onClick={handleExportUserRolesData}
-        className="w-full inline-flex items-center gap-x-1.5 rounded-md bg-custom-darkblue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-custom-hoverblue"
-      >
-        <FaTable aria-hidden="true" className="-ml-0.5 h-4 w-4" />
-        Export Role
-      </button>
-    </li>
-  </ul>
-</div> */}
 <div className="body-container">
   <h2 className="heading">Roles</h2>
   <div className="search-button-group">
@@ -346,7 +301,7 @@ function UserRoles() {
 
 
 
-        <TableContainer component={Paper} className="mt-4">
+        {/* <TableContainer component={Paper} className="mt-4">
           <Table>
             <TableHead>
               <TableRow>
@@ -362,15 +317,7 @@ function UserRoles() {
                   <StyledTableCell>{row.RoleID}</StyledTableCell>
                   <StyledTableCell>{row.RoleName}</StyledTableCell>
                   <StyledTableCell>
-                    <span
-                      className={`inline-block px-3 py-2 text-xs font-semibold rounded-full ${
-                        row.Status === "Active"
-                          ? "bg-green-100 text-green-800 shadow-md"
-                          : "bg-pink-100 text-pink-800 shadow-md"
-                      }`}
-                    >
-                      {row.Status}
-                    </span> */}
+                  
                     <span
   className={`status-pill ${
     row.Status === "Active" ? "status-active" : "status-inactive"
@@ -381,39 +328,7 @@ function UserRoles() {
 
                   </StyledTableCell>
                   <StyledTableCell>
-                    <button
-                      type="button"
-                      onClick={() => handleEditClick(row.RoleID,row.RoleName)}
-                      className=" m-0.5 inline-flex items-center gap-x-1 rounded-md hover:bg-sky-600 hover:text-white px-2 py-1 text-xs font-semibold  shadow-sm bg-[#d6eaf8] text-sky-900   "
-                    >
-                      <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteClick(row.RoleID)}
-                      className="inline-flex items-center gap-x-1 m-0.5 rounded-md hover:bg-rose-600 hover:text-white px-2 py-1 text-xs font-semibold  shadow-sm bg-pink-100  text-rose-900 "
-                    >
-                      <AiOutlineDelete aria-hidden="true" className="h-4 w-4" />
-                      Delete
-                    </button> */}
-                   {/* <button
-  type="button"
-  onClick={() => handleEditClick(row.RoleID)}
-  className="button edit-button"
->
-  <AiOutlineEdit aria-hidden="true" className="h-4 w-4" />
-  Edit
-</button>
-
-<button
-  type="button"
-  onClick={() => handleDeleteClick(row.RoleID)}
-  className="button delete-button"
->
-  <MdOutlineCancel aria-hidden="true" className="h-4 w-4" />
-  Delete
-</button>  */}
+                 
 <div className="button-container">
   <button
     type="button"
@@ -452,7 +367,75 @@ function UserRoles() {
               </TableRow>
             </TableFooter>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
+
+
+<TableContainer component={Paper} className="mt-4" sx={{ width: '80%',margin: '0 auto', marginTop: '1rem' }}>
+  <Table sx={{ width: '100%', tableLayout: 'fixed' }}>
+    <TableHead>
+      <TableRow>
+        <StyledTableCell sx={{ width: '20%' }} align="left">Role ID</StyledTableCell>
+        <StyledTableCell sx={{ width: '20%' }} align="left">Name</StyledTableCell>
+        <StyledTableCell sx={{ width: '20%' }} align="center">Status</StyledTableCell>
+        <StyledTableCell sx={{ width: '20%' }} align="center" colSpan={2}>Actions</StyledTableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {roles.map((row) => (
+        <StyledTableRow key={row.RoleID}>
+          <StyledTableCell align="left">{row.RoleID}</StyledTableCell>
+          <StyledTableCell align="left">{row.RoleName}</StyledTableCell>
+          <StyledTableCell align="center">
+            <span
+              className={`status-pill ${
+                row.Status === "Active" ? "status-active" : "status-inactive"
+              }`}
+            >
+              {row.Status}
+            </span>
+          </StyledTableCell>
+          <StyledTableCell align="center" colSpan={2}>
+            <div className="flex justify-center space-x-2">
+              <button
+                type="button"
+                onClick={() => handleEditClick(row.RoleID)}
+                className="button edit-button flex items-center"
+              >
+                <AiOutlineEdit aria-hidden="true" className="h-4 w-4 mr-1" />
+                Edit
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDeleteClick(row.RoleID)}
+                className="button delete-button flex items-center"
+              >
+                <MdOutlineCancel aria-hidden="true" className="h-4 w-4 mr-1" />
+                Delete
+              </button>
+            </div>
+          </StyledTableCell>
+        </StyledTableRow>
+      ))}
+    </TableBody>
+    <TableFooter>
+      <TableRow>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 25]}
+          colSpan={4}
+          count={totalRoles}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          ActionsComponent={TablePaginationActions}
+        />
+      </TableRow>
+    </TableFooter>
+  </Table>
+</TableContainer>
+
+
       </div>
     </div>
   );

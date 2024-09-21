@@ -1456,228 +1456,12 @@ function Userform() {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [query, setQuery] = useState("");
-  const [storeNames, setStoreNames] = useState([]);
-  
-  
-  // useEffect(() => {
-  //   if (isEditMode) {
-  //     const user = location.state?.userDetails?.user || userDetails?.user;
-  //     console.log("User details in edit mode:", user);
-  
-  //     if (user) {
-  //       // Initialize the base form data
-  //       const initialFormData = {
-  //         FirstName: user.FirstName || "",
-  //         LastName: user.LastName || "",
-  //         Email: user.Email || "",
-  //         PhoneNumber: user.PhoneNumber || "",
-  //         Gender: user.Gender || "",
-  //         RoleID: user.RoleID || "",
-  //         ProfileImage: null,
-  //         Comments: user.Comments || "",
-  //         UserID: user.UserID || "",
-  //         Password: user.Password || "",
-  //         AddressLine1: "",
-  //         AddressLine2: "",
-  //         CityID: "",
-  //         StateID: "",
-  //         CountryID: "",
-  //         ZipCode: "",
-  //         AddressID: 0,
-  //       };
-  
-  //       // If user has an address, update formData with address details
-  //       const userAddress = user?.Address;
-  //       if (userAddress) {
-  //         initialFormData.AddressLine1 = userAddress.AddressLine1 || "";
-  //         initialFormData.AddressLine2 = userAddress.AddressLine2 || "";
-  //         initialFormData.CityID = userAddress.CityID || "";
-  //         initialFormData.StateID = userAddress.StateID || "";
-  //         initialFormData.CountryID = userAddress.CountryID || "";
-  //         initialFormData.ZipCode = userAddress.ZipCode || "";
-  //         initialFormData.AddressID = userAddress.AddressID || 0;
-  //       }
-  
-  //       // Set form data with user details (address will be included if present)
-  //       setFormData(initialFormData);
-  
-  //       // If country/state/city data is already available, set the selected ones
-  //       const selectedCountry = countries?.find(
-  //         (country) => country.CountryID === userAddress?.CountryID
-  //       );
-  //       const selectedState = states?.find(
-  //         (state) => state.StateID === userAddress?.StateID
-  //       );
-  //       const selectedCity = cities?.find(
-  //         (city) => city.CityID === userAddress?.CityID
-  //       );
-  
-  //       setSelectedCountry(selectedCountry || {});
-  //       setSelectedState(selectedState || {});
-  //       setSelectedCity(selectedCity || {});
-  
-  //       // Fetch states if country is selected and no state data is available
-  //       if (userAddress?.CountryID && !selectedState) {
-  //         fetchStatesByCountry(userAddress.CountryID).then((fetchedStates) => {
-  //           const state = fetchedStates?.find(
-  //             (s) => s.StateID === userAddress.StateID
-  //           );
-  //           setSelectedState(state || {});
-  //         });
-  //       }
-  
-  //       // Fetch cities if state is selected and no city data is available
-  //       if (userAddress?.StateID && !selectedCity) {
-  //         fetchCitiesByState(userAddress.StateID).then((fetchedCities) => {
-  //           const city = fetchedCities?.find(
-  //             (c) => c.CityID === userAddress.CityID
-  //           );
-  //           setSelectedCity(city || {});
-  //         });
-  //       }
-  
-  //       // Set selected gender
-  //       const selectedGender = genderOptions?.find(
-  //         (gender) => gender.id === user.Gender
-  //       );
-  //       setSelectedGender(selectedGender || "");
-  
-  //       // Set selected role
-  //       const selectedRole = roleOptions?.find(
-  //         (role) => role.id === String(user.RoleID)
-  //       );
-  //       setSelectedRole(selectedRole ? selectedRole.name : "");
-  //     }
-  //   }
-  // }, [
-  //   isEditMode,
-  //   location.state?.userDetails?.user,
-  //   userDetails?.user,
-  //   genderOptions,
-  //   roleOptions,
-  //   countries,
-  //   states,
-  //   cities,
-  // ]);
-  
-  // useEffect(() => {
-  //   if (isEditMode) {
-  //     const user = location.state?.userDetails?.user || userDetails?.user;
-  //     console.log("User details in edit mode:", user);
-  
-  //     if (user) {
-  //       // Initialize base form data
-  //       const initialFormData = {
-  //         FirstName: user.FirstName || "",
-  //         LastName: user.LastName || "",
-  //         Email: user.Email || "",
-  //         PhoneNumber: user.PhoneNumber || "",
-  //         Gender: user.Gender || "",
-  //         RoleID: user.RoleID || "",
-  //         StoreID: user.StoreID || "",
-  //         ProfileImage: null,
-  //         Comments: user.Comments || "",
-  //         UserID: user.UserID || "",
-  //         Password: user.Password || "",
-  //         AddressLine1: "",
-  //         AddressLine2: "",
-  //         CityID: "",
-  //         StateID: "",
-  //         CountryID: "",
-  //         ZipCode: "",
-  //         AddressID: 0,
-  //       };
-  
-  //       // If user has an address, update formData with address details
-  //       const userAddress = user?.Address;
-  //       if (userAddress) {
-  //         initialFormData.AddressLine1 = userAddress.AddressLine1 || "";
-  //         initialFormData.AddressLine2 = userAddress.AddressLine2 || "";
-  //         initialFormData.CityID = userAddress.CityID || "";
-  //         initialFormData.StateID = userAddress.StateID || "";
-  //         initialFormData.CountryID = userAddress.CountryID || "";
-  //         initialFormData.ZipCode = userAddress.ZipCode || "";
-  //         initialFormData.AddressID = userAddress.AddressID || 0;
-  //       }
-  
-  //       // Set the form data with user details
-  //       setFormData(initialFormData);
-  
-  //       // Ensure country, state, city, gender, and role options exist before finding values
-  //       if (countries && userAddress?.CountryID) {
-  //         const selectedCountry = countries.find(
-  //           (country) => country.CountryID === userAddress.CountryID
-  //         );
-  //         setSelectedCountry(selectedCountry || {});
-  //       }
-  
-  //       if (states && userAddress?.StateID) {
-  //         const selectedState = states.find(
-  //           (state) => state.StateID === userAddress.StateID
-  //         );
-  //         setSelectedState(selectedState || {});
-  //       }
-  
-  //       if (cities && userAddress?.CityID) {
-  //         const selectedCity = cities.find(
-  //           (city) => city.CityID === userAddress.CityID
-  //         );
-  //         setSelectedCity(selectedCity || {});
-  //       }
-  
-  //       // Fetch states if the country is selected and no state data is available
-  //       if (userAddress?.CountryID && !states?.length) {
-  //         fetchStatesByCountry(userAddress.CountryID).then((fetchedStates) => {
-  //           const state = fetchedStates?.find(
-  //             (s) => s.StateID === userAddress.StateID
-  //           );
-  //           setSelectedState(state || {});
-  //         });
-  //       }
-  
-  //       // Fetch cities if the state is selected and no city data is available
-  //       if (userAddress?.StateID && !cities?.length) {
-  //         fetchCitiesByState(userAddress.StateID).then((fetchedCities) => {
-  //           const city = fetchedCities?.find(
-  //             (c) => c.CityID === userAddress.CityID
-  //           );
-  //           setSelectedCity(city || {});
-  //         });
-  //       }
-  
-  //       // Set Store
-  //   const userStore = storeNames.find(store => store.id === String(user.StoreID));
-  //   setSelectedStore(userStore);
+  const [storeNames, setStoreNames] = useState([  { StoreID: 1, StoreName: "Interior1" },
+    { StoreID: 2, StoreName: "Interior4" },
+    { StoreID: 3, StoreName: "Interior3" },
+    { StoreID: 4, StoreName: "Interior4" },
+    { StoreID: 5, StoreName: "Interior5" }]);
  
-  //   // Set Role
-  //   const userRole = roleOptions.find(role => role.id === String(user.RoleID));
-  //   setSelectedRole(userRole);
- 
-  //       // Set selected gender if gender options are available
-  //       const selectedGender = genderOptions?.find(
-  //         (gender) => gender.id === user.Gender
-  //       );
-  //       setSelectedGender(selectedGender || "");
-  
-  //       // Set selected role if role options are available
-  //       if (roleOptions) {
-  //         const selectedRole = roleOptions.find(
-  //           (role) => role.id === user.RoleID
-  //         );
-  //         setSelectedRole(selectedRole ? selectedRole.name : "");
-  //       }
-  //     }
-  //   }
-  // }, [
-  //   isEditMode,
-  //   location.state?.userDetails?.user,
-  //   userDetails?.user,
-  //   genderOptions,
-  //   roleOptions,
-  //   countries,
-  //   states,
-  //   cities,
-  // ]);
   
   useEffect(() => {
     if (isEditMode) {
@@ -1701,18 +1485,23 @@ function Userform() {
         Comments: user.Comments || "",
       });
    
-      // // Set Store
-      // const selectedStore = storeNames.find(store => store.id === String(user.StoreID));
-      // setSelectedStore( selectedStore);
-      // console.log( selectedStore);
 
-      const selectedStore = storeNames.find(store => store.id === String(user.StoreID));
-      if (selectedStore) {
-        setSelectedStore(selectedStore);
-        console.log("Selected Store:", selectedStore);
-      } else {
-        console.log("No store found for StoreID:", user.StoreID);
-      }
+      // const selectedStore = storeNames.find(store => store.id === String(user.StoreID));
+      // if (selectedStore) {
+      //   setSelectedStore(selectedStore);
+      //   console.log("Selected Store:", selectedStore);
+      // } else {
+      //   console.log("No store found for StoreID:", user.StoreID);
+      // }
+      // Assuming `user.StoreID` is the StoreID from user data
+const selectedStore = storeNames.find(store => store.StoreID === user.StoreID);
+
+if (selectedStore) {
+  setSelectedStore(selectedStore); // This sets the selected store
+  console.log("Selected Store:", selectedStore.StoreName); // You can log the selected store name
+} else {
+  console.log("No store found for StoreID:", user.StoreID);
+}
     
    
       // Set Role

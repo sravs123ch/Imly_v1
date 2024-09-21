@@ -134,7 +134,8 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 // Styled table cell with fixed width
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#008000',
+    backgroundColor: '#003375',
+    // backgroundColor: '#008000',
     color: theme.palette.common.white,
     fontWeight: 'bold',
     width: '150px', // Set a fixed width for consistent sizing
